@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 using static Define;
 
 namespace Data
@@ -9,13 +11,16 @@ namespace Data
     public class HeroData
     {
         public int DataId;
-        public string PrefabName;
+        public string PrefabPath;
         public float MaxHp;
         public float Atk;
         public float DefaultAtkRange;
         public float DefaultAtkCooltime;
         public float SkillRange;
         public float SkillCooltime;
+        public float MoveSpeed;
+        public int DefaultSkillId;
+        public int SpecialSkillId;
     }
 
     [Serializable]
@@ -37,11 +42,12 @@ namespace Data
     public class MonsterData
     {
         public int DataId;
-        public string PrefabName;
+        public string PrefabPath;
         public float MaxHp;
         public float Atk;
         public float AtkCountPerSecond; // 초당 공격 횟수
         public float AtkRange;
+        public float MoveSpeed;
     }
 
     [Serializable]
@@ -63,7 +69,7 @@ namespace Data
     public class ProjectileData
     {
         public int DataId;
-        public string PrefabName;
+        public string PrefabPath;
         public float ProjSpeed;
     }
     [Serializable]
@@ -81,12 +87,38 @@ namespace Data
     }
     #endregion
 
+    #region SkillData
+    [Serializable]
+    public class SkillData
+    {
+        public int DataId;
+        public string SkillName;
+        public float AtkRate;
+        public ETargetType TargetType;
+        public ESkillTargetSearchType SkillTargetSearchType; // 단일, 범위
+        public List<ESkillEffectType> SkillEffectTypes = new List<ESkillEffectType>(); // 공격, 회복, 스턴
+    }
+    [Serializable]
+    public class SkillDataLoader : ILoader<int, SkillData>
+    {
+        public List<SkillData> skills = new List<SkillData>();
+
+        public Dictionary<int, SkillData> MakeDict()
+        {
+            Dictionary<int, SkillData> dict = new Dictionary<int, SkillData>();
+            foreach (SkillData skill in skills)
+                dict.Add(skill.DataId, skill);
+            return dict;
+        }
+    }
+    #endregion
+
     #region StageData
     [Serializable]
     public class StageData
     {
         public int StageIndex;
-        public string PrefabName;
+        public string PrefabPath;
         public float HeroRespawnTime;
         public float MonsterRespawnTime;
         public float MonsterMaxSpawnOnce;

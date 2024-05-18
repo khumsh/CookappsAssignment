@@ -1,2 +1,2 @@
-﻿StageIndex,PrefabName,HeroRespawnTime,MonsterRespawnTime,MonsterMaxSpawnOnce
-1,Stage1,5,5,5
+﻿StageIndex,PrefabPath,HeroRespawnTime,MonsterRespawnTime,MonsterMaxSpawnOnce
+1,Prefab/Stage1,5,5,5

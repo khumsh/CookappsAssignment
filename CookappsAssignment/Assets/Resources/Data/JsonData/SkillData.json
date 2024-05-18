@@ -1,0 +1,85 @@
+{
+  "skills": [
+    {
+      "DataId": 100001,
+      "SkillName": "Skill_KnightDefault",
+      "AtkRate": 1.0,
+      "TargetType": 1,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        0
+      ]
+    },
+    {
+      "DataId": 100002,
+      "SkillName": "Skill_KnightSpecial",
+      "AtkRate": 1.0,
+      "TargetType": 1,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        0,
+        2
+      ]
+    },
+    {
+      "DataId": 100003,
+      "SkillName": "Skill_ThiefDefault",
+      "AtkRate": 1.0,
+      "TargetType": 1,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        0
+      ]
+    },
+    {
+      "DataId": 100004,
+      "SkillName": "Skill_ThiefSpecial",
+      "AtkRate": 1.0,
+      "TargetType": 1,
+      "SkillTargetSearchType": 1,
+      "SkillEffectTypes": [
+        0
+      ]
+    },
+    {
+      "DataId": 100005,
+      "SkillName": "Skill_ArcherDefault",
+      "AtkRate": 1.0,
+      "TargetType": 1,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        0
+      ]
+    },
+    {
+      "DataId": 100006,
+      "SkillName": "Skill_ArcherSpecial",
+      "AtkRate": 2.5,
+      "TargetType": 1,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        0
+      ]
+    },
+    {
+      "DataId": 100007,
+      "SkillName": "Skill_PriestDefault",
+      "AtkRate": 1.0,
+      "TargetType": 1,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        0
+      ]
+    },
+    {
+      "DataId": 100008,
+      "SkillName": "Skill_PriestSpecial",
+      "AtkRate": 2.5,
+      "TargetType": 0,
+      "SkillTargetSearchType": 0,
+      "SkillEffectTypes": [
+        1
+      ]
+    }
+  ]
+}

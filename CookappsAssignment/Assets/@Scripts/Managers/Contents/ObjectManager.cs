@@ -56,7 +56,9 @@ public class ObjectManager
 
         if (type == typeof(Hero))
         {
-            GameObject go = Managers.Resource.Instantiate("HeroPrefab");
+            var data = Managers.Data.HeroDic[templateID];
+
+            GameObject go = Managers.Resource.Instantiate(data.PrefabPath);
             // go.name = Managers.Data.HeroDic[templateID].DescriptionTextID;
             go.transform.position = spawnPos;
             go.transform.parent = HeroRoot;
@@ -68,7 +70,9 @@ public class ObjectManager
         }
         if (type == typeof(Monster))
         {
-            GameObject go = Managers.Resource.Instantiate("MonsterPrefab", pooling: true);
+            var data = Managers.Data.MonsterDic[templateID];
+
+            GameObject go = Managers.Resource.Instantiate(data.PrefabPath, pooling: true);
             go.transform.position = spawnPos;
             go.transform.parent = MonsterRoot;
             Monster mc = go.GetOrAddComponent<Monster>();

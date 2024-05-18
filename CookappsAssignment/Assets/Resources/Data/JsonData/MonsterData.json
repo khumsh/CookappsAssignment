@@ -1,0 +1,13 @@
+{
+  "monsters": [
+    {
+      "DataId": 5001,
+      "PrefabPath": "Prefab/Monster",
+      "MaxHp": 100.0,
+      "Atk": 10.0,
+      "AtkCountPerSecond": 1.0,
+      "AtkRange": 1.0,
+      "MoveSpeed": 5.0
+    }
+  ]
+}

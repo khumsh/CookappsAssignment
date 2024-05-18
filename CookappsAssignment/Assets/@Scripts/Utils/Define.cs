@@ -27,6 +27,13 @@ public class Define
         Skill
     }
 
+    public enum ESkillState
+    {
+        Ready,
+        Use,
+        Cooldown
+    }
+
     public enum EObjectType
     {
         Creature,
@@ -35,10 +42,16 @@ public class Define
         Projectile
     }
 
+    public enum ETargetType
+    {
+        Hero,
+        Monster,
+    }
+
     public enum EScene
     {
         Unknown,
-        TestScene,
+        AssignmentScene,
     }
 
     public enum EUIEvent
@@ -59,6 +72,32 @@ public class Define
         Miss,
         Heal,
         CriticalHeal
+    }
+
+    public enum EStatModType
+    {
+        Add, // 그냥 합산
+        PercentAdd,
+        PercentMult,
+    }
+
+    public enum ESkillSlot
+    {
+        Default,
+        Special
+    }
+
+    public enum ESkillTargetSearchType
+    {
+        Single,
+        Range
+    }
+
+    public enum ESkillEffectType
+    {
+        DealDamage,
+        Heal,
+        Stun
     }
 
     #endregion

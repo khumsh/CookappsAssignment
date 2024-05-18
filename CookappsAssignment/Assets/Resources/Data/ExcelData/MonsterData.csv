@@ -1,2 +1,2 @@
-﻿DataId,PrefabName,MaxHp,Atk,AtkCountPerSecond,AtkRange
-5001,Goblin,100,10,1,1
+﻿DataId,PrefabPath,MaxHp,Atk,AtkCountPerSecond,AtkRange,MoveSpeed
+5001,Prefab/Monster,100,10,1,1,5

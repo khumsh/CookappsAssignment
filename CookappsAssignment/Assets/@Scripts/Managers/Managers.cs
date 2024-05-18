@@ -32,7 +32,6 @@ public class Managers : MonoBehaviour
 
     #endregion
 
-    
     public static void Init()
     {
         if (s_instance == null && Initialized == false)

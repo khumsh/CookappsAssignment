@@ -1,0 +1,9 @@
+﻿DataId,SkillName,AtkRate,TargetType,SkillTargetSearchType,SkillEffectTypes
+100001,Skill_KnightDefault,1,Monster,Single,DealDamage
+100002,Skill_KnightSpecial,1,Monster,Single,DealDamage&Stun
+100003,Skill_ThiefDefault,1,Monster,Single,DealDamage
+100004,Skill_ThiefSpecial,1,Monster,Range,DealDamage
+100005,Skill_ArcherDefault,1,Monster,Single,DealDamage
+100006,Skill_ArcherSpecial,2.5,Monster,Single,DealDamage
+100007,Skill_PriestDefault,1,Monster,Single,DealDamage
+100008,Skill_PriestSpecial,2.5,Hero,Single,Heal

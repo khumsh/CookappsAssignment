@@ -1,0 +1,56 @@
+{
+  "heroes": [
+    {
+      "DataId": 2001,
+      "PrefabPath": "Prefab/Knight",
+      "MaxHp": 400.0,
+      "Atk": 5.0,
+      "DefaultAtkRange": 1.0,
+      "DefaultAtkCooltime": 1.5,
+      "SkillRange": 1.0,
+      "SkillCooltime": 3.0,
+      "MoveSpeed": 3.0,
+      "DefaultSkillId": 100001,
+      "SpecialSkillId": 100002
+    },
+    {
+      "DataId": 2002,
+      "PrefabPath": "Prefab/Thief",
+      "MaxHp": 200.0,
+      "Atk": 10.0,
+      "DefaultAtkRange": 1.0,
+      "DefaultAtkCooltime": 1.0,
+      "SkillRange": 2.0,
+      "SkillCooltime": 3.0,
+      "MoveSpeed": 3.0,
+      "DefaultSkillId": 100003,
+      "SpecialSkillId": 100004
+    },
+    {
+      "DataId": 2003,
+      "PrefabPath": "Prefab/Archer",
+      "MaxHp": 100.0,
+      "Atk": 15.0,
+      "DefaultAtkRange": 4.0,
+      "DefaultAtkCooltime": 1.0,
+      "SkillRange": 4.0,
+      "SkillCooltime": 4.0,
+      "MoveSpeed": 3.0,
+      "DefaultSkillId": 100005,
+      "SpecialSkillId": 100006
+    },
+    {
+      "DataId": 2004,
+      "PrefabPath": "Prefab/Priest",
+      "MaxHp": 100.0,
+      "Atk": 10.0,
+      "DefaultAtkRange": 4.0,
+      "DefaultAtkCooltime": 1.0,
+      "SkillRange": 4.0,
+      "SkillCooltime": 6.0,
+      "MoveSpeed": 3.0,
+      "DefaultSkillId": 100007,
+      "SpecialSkillId": 100008
+    }
+  ]
+}

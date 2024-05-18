@@ -6,7 +6,6 @@ using static Define;
 public class Hero_AtkState : IState
 {
     private Hero hero;
-    private EAtkState atkState => hero.AtkState;
 
     public string StateName => ECreatureState.Atk.ToString();
 
@@ -18,11 +17,21 @@ public class Hero_AtkState : IState
     public void Enter()
     {
         hero.PlayAnimation(StateName);
+
+        Skill skill = hero.SkillSystem.GetUseableSkill();
+        if (skill != null) 
+        {
+            skill.UseSkill();
+        }
+
     }
 
     public void Update()
     {
-        
+        if (hero.IsAnimationDone(StateName))
+        {
+            hero.ChangeState(ECreatureState.Idle);
+        }
     }
 
     public void Exit()

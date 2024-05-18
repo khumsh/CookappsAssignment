@@ -9,6 +9,11 @@ public class Monster_MoveState : IState
 
     public string StateName => ECreatureState.Move.ToString();
 
+    public Monster_MoveState(Monster monster)
+    { 
+        this.monster = monster; 
+    }
+
     public void Enter()
     {
         monster.PlayAnimation(StateName);
