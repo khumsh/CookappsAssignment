@@ -93,6 +93,7 @@ namespace Data
     {
         public int DataId;
         public string SkillName;
+        public ESkillType SkillType;
         public float AtkRate;
         public ETargetType TargetType;
         public ESkillTargetSearchType SkillTargetSearchType; // 단일, 범위
@@ -121,7 +122,7 @@ namespace Data
         public string PrefabPath;
         public float HeroRespawnTime;
         public float MonsterRespawnTime;
-        public float MonsterMaxSpawnOnce;
+        public int MonsterMaxSpawnOnce;
     }
     [Serializable]
     public class StageDataLoader : ILoader<int, StageData>

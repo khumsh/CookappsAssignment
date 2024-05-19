@@ -16,26 +16,31 @@ public class Hero_AtkState : IState
 
     public void Enter()
     {
+        hero.CreatureState = ECreatureState.Atk;
         hero.PlayAnimation(StateName);
 
         Skill skill = hero.SkillSystem.GetUseableSkill();
         if (skill != null) 
-        {
             skill.UseSkill();
-        }
+        else
+            hero.ChangeState(ECreatureState.Idle);
 
+        hero.Flip();
+
+        hero.col2D.isTrigger = true;
     }
 
     public void Update()
     {
-        if (hero.IsAnimationDone(StateName))
-        {
+        if (!hero.Target.IsValid())
             hero.ChangeState(ECreatureState.Idle);
-        }
+
+        if (hero.IsAnimationDone(StateName))
+            hero.ChangeState(ECreatureState.Idle);
     }
 
     public void Exit()
     {
-        
+        hero.col2D.isTrigger = false;
     }
 }

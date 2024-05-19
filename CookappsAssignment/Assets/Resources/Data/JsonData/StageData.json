@@ -5,7 +5,7 @@
       "PrefabPath": "Prefab/Stage1",
       "HeroRespawnTime": 5.0,
       "MonsterRespawnTime": 5.0,
-      "MonsterMaxSpawnOnce": 5.0
+      "MonsterMaxSpawnOnce": 5
     }
   ]
 }

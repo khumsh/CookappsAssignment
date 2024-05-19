@@ -101,6 +101,16 @@ public static class Util
         return new Vector2(x, y);
     }
 
+    public static Vector2 RandomPointInAnnulus(Vector2 origin, float minRadius = 6, float maxRadius = 12)
+    {
+        float randomDist = Random.Range(minRadius, maxRadius);
+
+        Vector2 randomDir = new Vector2(Random.Range(-100, 100), Random.Range(-100, 100)).normalized;
+        
+        var point = origin + randomDir * randomDist;
+        return point;
+    }
+
     public static bool CheckProbability(float probability)
     {
         float randomValue = Random.Range(0.0f, 1.0f);

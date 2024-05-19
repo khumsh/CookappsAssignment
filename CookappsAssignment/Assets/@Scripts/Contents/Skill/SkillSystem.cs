@@ -18,28 +18,25 @@ public class SkillSystem : MonoBehaviour
         Owner = GetComponent<Hero>();
     }
 
-    public void AddSkill(int skillId, ESkillSlot skillSlot)
+    public void AddSkill(int skillId, ESkillType skillType)
     {
         if (skillId == 0)
             return;
 
-        //string className = Managers.Data.SkillDic[skillId].ClassName;
-        //Skill skill = gameObject.AddComponent(Type.GetType(className)) as Skill;
+        if (Owner == null)
+            Owner = GetComponent<Hero>();
 
         Skill skill = new Skill();
 
-        if (skill == null)
-            return;
-
-        skill.SetInfo(skillId, Owner, skillSlot);
+        skill.SetInfo(skillId, Owner);
         SkillList.Add(skill);
 
-        switch (skillSlot)
+        switch (skillType)
         {
-            case ESkillSlot.Default:
+            case ESkillType.Default:
                 DefaultSkill = skill;
                 break;
-            case ESkillSlot.Special:
+            case ESkillType.Special:
                 SpecialSkill = skill;
                 break;
         }

@@ -19,21 +19,21 @@ public static class Extension
     {
         return go != null && go.activeSelf;
     }
-    
-    //public static bool IsValid(this BaseObject bc)
-    //{
-    //    if (bc == null || bc.isActiveAndEnabled == false)
-    //        return false;
-        
-    //    switch (bc.ObjectType)
-    //    {
-    //        case Define.EObjectType.Monster:
-    //        case Define.EObjectType.Hero:
-    //            return ((Creature)bc).CreatureState != Define.ECreatureState.Dead;
-    //    }
-    //    return true;
-    //}
-   
+
+    public static bool IsValid(this BaseObject bc)
+    {
+        if (bc == null || bc.isActiveAndEnabled == false)
+            return false;
+
+        switch (bc.ObjectType)
+        {
+            case Define.EObjectType.Monster:
+            case Define.EObjectType.Hero:
+                return ((Creature)bc).CreatureState != Define.ECreatureState.Dead;
+        }
+        return true;
+    }
+
     public static void DestroyChilds(this GameObject go)
     {
         Transform[] children = new Transform[go.transform.childCount];

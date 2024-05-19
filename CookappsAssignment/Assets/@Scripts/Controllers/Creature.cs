@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,23 +9,27 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class Creature : BaseObject
 {
-    public ECreatureState CreatureState { get; protected set; }
+    public ECreatureState CreatureState { get; set; }
     public EntityStateMachine StateMachine { get; protected set; }
 
+    [Header("Components")]
     public Animator animator;
+    public Collider2D col2D;
+    public SpriteRenderer[] spriteRenderers;
+    
+
+    [Header("Other Setting")]
+    public UI_HPBar hpBar;
+    public Transform view;
+    public bool isLeftFacing;
 
     public Creature Target { get; set; }
     public bool IsPlayer => this is Hero;
-
-    public event Action onDeath;
-    public event Action onDamage;
 
     protected override bool Init()
     {
         if (!base.Init())
             return false;
-
-
 
         return true;
     }
@@ -37,13 +42,16 @@ public class Creature : BaseObject
 
     public virtual void SetInfo(int templateId)
     {
+        if (hpBar.gameObject.IsValid())
+        {
+            hpBar.SetInfo(this);
+        }
+
     }
 
     protected virtual void StateMachineInit()
     {
         StateMachine = new EntityStateMachine();
-
-        onDeath += () => ChangeState(ECreatureState.Dead);
     }
 
     public void ChangeState(ECreatureState nextState)
@@ -53,9 +61,24 @@ public class Creature : BaseObject
 
     public virtual void OnDamaged(float dmg, Creature attacker, Skill skill)
     {
-        Debug.Log($"{name} get damaged by {attacker} {skill.SkillSlot}! ");
+        if (skill != null)
+            Debug.Log($"{name} get damaged by {attacker}'s {skill.SkillData.SkillType}Skill! ");
 
+        // Show Damage
+        {
+            EDamageResult damageResult = (dmg > 0) ? EDamageResult.Hit : EDamageResult.Heal;
+            Managers.Object.ShowDamageFont(Position + Vector3.up, dmg, transform, damageResult);
+        
+            switch (damageResult)
+            {
+                case EDamageResult.Heal:
+                    Managers.Resource.Instantiate("Effect/HealEffect", transform);
+                    break;
+            }
+        }
 
+        // Damage Effect
+        PlayDamageAnim();
     }
 
     protected virtual void OnDead()
@@ -63,24 +86,32 @@ public class Creature : BaseObject
 
     }
 
-    public Creature GetTargetInRange(Vector3 point, float range, ETargetType targetType)
+    public Creature GetTargetInRange(Vector3 point, float range, ETargetType targetType, bool canSelf = false)
     {
-        Creature target = null;
+        Creature[] targets = GetTargetsInRange(point, range, targetType, canSelf);
+        if (targets != null && targets.Length > 0)
+        {
+            // 가장 가까운 타겟 찾기
+            Creature closestTarget = null;
+            float closestDistSqr = float.MaxValue;
+            foreach (Creature target in targets) 
+            {
+                float distSqr = (target.Position - Position).sqrMagnitude;
+                if (distSqr < closestDistSqr)
+                {
+                    closestDistSqr = distSqr;
+                    closestTarget = target;
+                }
+            }
 
-        int targetLayer;
-        if (targetType == ETargetType.Hero)
-            targetLayer = LayerMask.GetMask("Hero");
-        else
-            targetLayer = LayerMask.GetMask("Monster");
+            return closestTarget;
+        }
+            
 
-        Collider2D targetCollider = Physics2D.OverlapCircle(point, range, targetLayer);
-        if (targetCollider != null)
-            target = targetCollider.GetComponent<Creature>();
-
-        return target;
+        return null;
     }
 
-    public Creature[] GetTargetsInRange(Vector3 point, float range, ETargetType targetType)
+    public Creature[] GetTargetsInRange(Vector3 point, float range, ETargetType targetType, bool canSelf = false)
     {
         List<Creature> targets = new List<Creature>();
 
@@ -95,13 +126,21 @@ public class Creature : BaseObject
         {
             for(int i = 0; i < targetColliders.Length; i++) 
             {
-                Creature c = targetColliders[i].GetComponent<Creature>();
-                if (c != null)
-                    targets.Add(c);
+                Creature t = targetColliders[i].GetComponent<Creature>();
+                if (t != null && Vector3.Distance(Position, t.transform.position) <= range)
+                {
+                    if (!canSelf && t == this)
+                        continue;
+
+                    targets.Add(t);
+                }
+                    
             }
+
+            return targets.ToArray();
         }
 
-        return targets.ToArray();
+        return null;        
     }
 
     #region Anim
@@ -124,5 +163,32 @@ public class Creature : BaseObject
     {
         animator.Play(animationName, 0);
     }
+
+    protected void PlayDamageAnim()
+    {
+        float effectDuration = 0.1f;
+        foreach (var sp in spriteRenderers)
+        {
+            sp.DOKill(complete: true);
+            sp.DOColor(Color.red, effectDuration).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Flash);
+        }
+    }
     #endregion
+
+    public void Flip()
+    {
+        if (Target.IsValid())
+        {
+            Vector3 dir = Target.Position - Position;
+            Flip(dir.x > 0);
+        }
+    }
+
+    public void Flip(bool isRight)
+    {
+        Vector3 leftVec = (isLeftFacing) ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+        Vector3 rightVec = (isLeftFacing) ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+
+        view.localScale = (isRight) ? rightVec : leftVec;
+    }
 }

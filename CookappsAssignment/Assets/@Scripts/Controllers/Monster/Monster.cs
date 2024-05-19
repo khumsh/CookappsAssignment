@@ -1,5 +1,6 @@
 using System.Collections;
 using Data;
+using DG.Tweening;
 using UnityEngine;
 using static Define;
 
@@ -17,12 +18,12 @@ public class Monster : Creature
 
     public override void SetInfo(int templateId)
     {
-        base.SetInfo(templateId);
-        
         MonsterData = Managers.Data.MonsterDic[templateId];
 
         StatsInit();
         StateMachineInit();
+
+        base.SetInfo(templateId);
     }
 
     protected void StatsInit()
@@ -45,6 +46,8 @@ public class Monster : Creature
         StateMachine.AddState(new Monster_AtkState(this));
         StateMachine.AddState(new Monster_DeadState(this));
 
+        StateMachine.AddState(new Monster_StunState(this));
+
         ChangeState(ECreatureState.Idle);
     }
 
@@ -52,15 +55,27 @@ public class Monster : Creature
     {
         base.OnDamaged(dmg, attacker, skill);
 
-        MonsterStats.Hp = Mathf.Clamp(MonsterStats.Hp - dmg, 0, MonsterStats.MaxHp.Value);
-        Debug.Log($"{name}'s HP : {MonsterStats.Hp}/{MonsterStats.MaxHp}");
+        // Apply Damage
+        {
+            MonsterStats.Hp = Mathf.Clamp(MonsterStats.Hp - dmg, 0, MonsterStats.MaxHp.Value);
+            Debug.Log($"{name}'s HP : {MonsterStats.Hp}/{MonsterStats.MaxHp.Value}");
+        }
+
+        if (Mathf.Approximately(MonsterStats.Hp, 0))
+        {
+            OnDead();
+        }
     }
 
     protected override void OnDead()
     {
         base.OnDead();
 
-        
+        // Dead 상태로 전이
+        ChangeState(ECreatureState.Dead);
+
+        Managers.Game.EnemyKillCount++;
     }
+
     
 }

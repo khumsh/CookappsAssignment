@@ -39,13 +39,27 @@ public class ObjectManager
         Projectiles.Clear();
     }
 
-    public void ShowDamageFont(Vector2 pos, float damage, Transform parent, EDamageResult result)
+    public DamageFont ShowDamageFont(Vector2 pos, float damage, Transform parent, EDamageResult result)
     {
-        string prefabName = "DamageFont";
+        string prefabPath = "UI/DamageFont";
 
-        GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+        GameObject go = Managers.Resource.Instantiate(prefabPath, pooling: true);
         DamageFont damageText = go.GetComponent<DamageFont>();
         damageText.SetInfo(pos, damage, parent, result);
+
+        return damageText;
+    }
+
+    public FloatingText ShowFloatingText(string msg, Vector2 pos, Color color, float fontSize = 3, Transform parent = null)
+    {
+        string prefabPath = "UI/FloatingText";
+
+        GameObject go = Managers.Resource.Instantiate(prefabPath, pooling: true);
+        go.transform.position = pos;
+        FloatingText ft = go.GetOrAddComponent<FloatingText>();
+        ft.SetInfo(msg, pos, color, fontSize, parent);
+
+        return ft;
     }
 
     public T Spawn<T>(Vector3 position, int templateID = 0, string prefabName = "") where T : BaseObject
@@ -59,7 +73,6 @@ public class ObjectManager
             var data = Managers.Data.HeroDic[templateID];
 
             GameObject go = Managers.Resource.Instantiate(data.PrefabPath);
-            // go.name = Managers.Data.HeroDic[templateID].DescriptionTextID;
             go.transform.position = spawnPos;
             go.transform.parent = HeroRoot;
             Hero hc = go.GetOrAddComponent<Hero>();
@@ -114,7 +127,7 @@ public class ObjectManager
         Managers.Resource.Destroy(projectile.gameObject);
     }
 
-    //private T FindClosestTarget<T>(Creature source, List<T> targets) where T : InteractionObject
+    //private T FindClosestTarget<T>(Creature source, List<T> targets) where T : Creature
     //{
     //    float minDistance = float.MaxValue;
     //    T closestTarget = null;
@@ -130,9 +143,6 @@ public class ObjectManager
                
     //        // float AttackRange = Mathf.Max(source.Skills.CurrentSkill.SkillData.SkillRange, SCAN_RANGE);
     //        //
-    //        // if (Managers.Object.HeroCamp.CampState == ECampState.CmapMode && source.ObjectType == EObjectType.Monster)
-    //        //     AttackRange = 100f;
-            
     //        // if(distance > AttackRange * AttackRange)
     //        //     continue;
             

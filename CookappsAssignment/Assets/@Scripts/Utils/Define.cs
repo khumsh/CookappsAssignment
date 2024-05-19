@@ -5,6 +5,15 @@ using static Util;
 
 public class Define
 {
+    // 하드 코딩 (기능 구현용 과제이므로...)
+    public static int ID_HERO_KNIGHT = 2001;
+    public static int ID_HERO_THIEF = 2002;
+    public static int ID_HERO_ARCHER = 2003;
+    public static int ID_HERO_PRIEST = 2004;
+    public static int ID_MONSTER_NORMAL = 5001;
+
+    public static float DETECT_RANGE_MONSTER = 6f; // 과제 파일에 없어서 임의로 지정
+
     #region Enum
 
     public enum ECreatureState
@@ -12,7 +21,8 @@ public class Define
         Idle,
         Move,
         Atk,
-        Dead
+        Dead,
+        Stun
     }
 
     public enum EMoveState
@@ -81,7 +91,7 @@ public class Define
         PercentMult,
     }
 
-    public enum ESkillSlot
+    public enum ESkillType
     {
         Default,
         Special

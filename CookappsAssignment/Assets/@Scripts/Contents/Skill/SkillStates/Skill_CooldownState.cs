@@ -19,7 +19,7 @@ public class Skill_CooldownState : IState
 
     public void Enter()
     {
-        cooldownTime = (skill.SkillSlot == ESkillSlot.Default) ?
+        cooldownTime = (skill.SkillData.SkillType == ESkillType.Default) ?
             ownerData.DefaultAtkCooltime : ownerData.SkillCooltime;
 
         Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State\n" +

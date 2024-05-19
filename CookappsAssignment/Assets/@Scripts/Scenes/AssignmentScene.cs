@@ -1,9 +1,15 @@
+using Cinemachine;
+using Data;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Define;
 
 public class AssignmentScene : BaseScene
 {
+    public CinemachineVirtualCamera virtualCamera;
+
     protected override bool Init()
     {
         if (!base.Init())
@@ -11,20 +17,14 @@ public class AssignmentScene : BaseScene
 
         Managers.Data.Init();
 
-        // 하드 코딩 (기능 구현용 과제이므로...)
-        int knightId = 2001;
-        int thiefId = 2002;
-        int archerId = 2003;
-        int priestId = 2004;
-        int monsterId = 5001;
+        Hero knight = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_KNIGHT);
+        Hero thief = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_THIEF);
+        Hero archer = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_ARCHER);
+        Hero priest = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_PRIEST);
 
+        virtualCamera.Follow = knight.transform;
 
-        Hero knight = Managers.Object.Spawn<Hero>(Vector3.zero, knightId);
-        //Hero thief = Managers.Object.Spawn<Hero>(Vector3.zero, thiefId);
-        //Hero archer = Managers.Object.Spawn<Hero>(Vector3.zero, archerId);
-        //Hero priest = Managers.Object.Spawn<Hero>(Vector3.zero, priestId);
-
-        Monster monster = Managers.Object.Spawn<Monster>(Vector3.up * 3, monsterId);
+        StartCoroutine(StartStageCo(1));
 
         return true;
     }
@@ -33,4 +33,33 @@ public class AssignmentScene : BaseScene
     {
         
     }
+
+    IEnumerator StartStageCo(int stageIndex)
+    {
+        StageData stageData = Managers.Data.StageDic[stageIndex];
+
+        var wait = new WaitForSeconds(stageData.MonsterRespawnTime);
+
+        Managers.Game.EnemyKillCount = 0;
+
+        while (true)
+        {
+            yield return wait;
+
+            int spawnCount = Random.Range(1, stageData.MonsterMaxSpawnOnce + 1);
+            
+            for (int i = 0; i < spawnCount; i++)
+            {
+                Vector2 spawnPos = Util.RandomPointInAnnulus(Managers.Object.Heroes.FirstOrDefault().Position, 5, 10);
+                Managers.Object.Spawn<Monster>(spawnPos, ID_MONSTER_NORMAL);
+            }
+
+            if (Managers.Game.EnemyKillCount >= 5)
+            {
+                Managers.UI.ShowToast("Stage Clear!");
+                break;
+            }
+        }
+    }
+
 }

@@ -3,6 +3,7 @@
     {
       "DataId": 100001,
       "SkillName": "Skill_KnightDefault",
+      "SkillType": 0,
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
@@ -13,6 +14,7 @@
     {
       "DataId": 100002,
       "SkillName": "Skill_KnightSpecial",
+      "SkillType": 1,
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
@@ -24,6 +26,7 @@
     {
       "DataId": 100003,
       "SkillName": "Skill_ThiefDefault",
+      "SkillType": 0,
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
@@ -34,6 +37,7 @@
     {
       "DataId": 100004,
       "SkillName": "Skill_ThiefSpecial",
+      "SkillType": 1,
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 1,
@@ -44,6 +48,7 @@
     {
       "DataId": 100005,
       "SkillName": "Skill_ArcherDefault",
+      "SkillType": 0,
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
@@ -54,6 +59,7 @@
     {
       "DataId": 100006,
       "SkillName": "Skill_ArcherSpecial",
+      "SkillType": 1,
       "AtkRate": 2.5,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
@@ -64,6 +70,7 @@
     {
       "DataId": 100007,
       "SkillName": "Skill_PriestDefault",
+      "SkillType": 0,
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
@@ -74,6 +81,7 @@
     {
       "DataId": 100008,
       "SkillName": "Skill_PriestSpecial",
+      "SkillType": 1,
       "AtkRate": 2.5,
       "TargetType": 0,
       "SkillTargetSearchType": 0,

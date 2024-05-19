@@ -10,5 +10,6 @@ using Random = UnityEngine.Random;
 
 public class GameManager
 {
-    
+    public int EnemyKillCount { get; set; } = 0;
+    public bool IsGameOver { get; set; } = false;
 }

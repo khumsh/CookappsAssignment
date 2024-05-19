@@ -4,35 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class Skill/* : BaseObject*/
+public class Skill
 {
     public Hero Owner { get; private set; }
     public SkillData SkillData { get; private set; }
-    public ESkillSlot SkillSlot { get; private set; }
 
     public EntityStateMachine StateMachine { get; protected set; }
 
-    //protected override bool Init()
-    //{
-    //    if (!base.Init())
-    //        return false;
-
-
-
-    //    return true;
-    //}
-
-    public virtual void SetInfo(int templateId, Hero owner, ESkillSlot skillSlot)
+    
+    public virtual void SetInfo(int templateId, Hero owner)
     {
         Owner = owner;
         SkillData = Managers.Data.SkillDic[templateId];
-        SkillSlot = skillSlot;
 
         StateMachineInit();
     }
 
     public void UseSkill()
     {
+        // Use »óÅÂ·Î
         ChangeState(ESkillState.Use);
     }
 

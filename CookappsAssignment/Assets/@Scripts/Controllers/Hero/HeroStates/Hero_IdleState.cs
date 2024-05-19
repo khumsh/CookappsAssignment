@@ -7,6 +7,9 @@ public class Hero_IdleState : IState
 {
     private Hero hero;
     private HeroStats heroStats => hero.HeroStats;
+    
+    private float detectRange = 30; // 과제 파일에 없어서 임의로 지정
+
     public string StateName => ECreatureState.Idle.ToString();
 
     public Hero_IdleState(Hero hero)
@@ -18,21 +21,13 @@ public class Hero_IdleState : IState
     {
         Debug.Log($"{hero.name} : Enter [{StateName}] State");
 
+        hero.CreatureState = ECreatureState.Idle;
         hero.PlayAnimation(StateName);
     }
 
     public void Update()
     {
-        if (hero.Target == null)
-        {
-            Creature target = hero.GetTargetInRange(hero.transform.position, 5, ETargetType.Monster);
-            if (target != null)
-            {
-                hero.Target = target;
-                hero.ChangeState(ECreatureState.Move);
-            }
-        }
-        else
+        if (hero.Target.IsValid())
         {
             bool canUseSpecialSkill = GetDistSqrToTarget() <= heroStats.SkillRange.Value * heroStats.SkillRange.Value
                 && hero.SkillSystem.SpecialSkill.IsReady();
@@ -43,8 +38,20 @@ public class Hero_IdleState : IState
             {
                 hero.ChangeState(ECreatureState.Atk);
             }
+
+            return;
         }
-        
+
+        // Search Target
+        {
+            Creature target = hero.GetTargetInRange(hero.Position, detectRange, ETargetType.Monster);
+            if (target.IsValid())
+            {
+                hero.Target = target;
+                hero.ChangeState(ECreatureState.Move);
+            }
+        }
+
     }
 
     public void Exit()
@@ -55,6 +62,6 @@ public class Hero_IdleState : IState
     // target과의 거리
     private float GetDistSqrToTarget()
     {
-        return (hero.Target.transform.position - hero.transform.position).sqrMagnitude;
+        return (hero.Target.Position - hero.Position).sqrMagnitude;
     }
 }

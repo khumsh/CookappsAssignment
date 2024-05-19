@@ -19,12 +19,13 @@ public class Hero_MoveState : IState
     {
         Debug.Log($"{hero.name} : Enter [{StateName}] State");
 
+        hero.CreatureState = ECreatureState.Move;
         hero.PlayAnimation(StateName);
     }
 
     public void Update()
     {
-        if (hero.Target != null)
+        if (hero.Target.IsValid())
         {
             MoveToTarget();
 
@@ -38,6 +39,10 @@ public class Hero_MoveState : IState
                 hero.ChangeState(ECreatureState.Atk);
             }
         }
+        else
+        {
+            hero.ChangeState(ECreatureState.Idle);
+        }
             
 
         
@@ -50,14 +55,16 @@ public class Hero_MoveState : IState
 
     private void MoveToTarget()
     {
-        Vector3 dir = hero.Target.transform.position - hero.transform.position;
+        Vector3 dir = hero.Target.Position - hero.Position;
         float moveDist = Mathf.Min(dir.magnitude, heroStats.MoveSpeed.Value * Time.deltaTime);
         hero.transform.position += dir.normalized * moveDist;
+
+        hero.Flip();
     }
 
     // target과의 거리
     private float GetDistSqrToTarget()
     {
-        return (hero.Target.transform.position - hero.transform.position).sqrMagnitude;
+        return (hero.Target.Position - hero.Position).sqrMagnitude;
     }
 }

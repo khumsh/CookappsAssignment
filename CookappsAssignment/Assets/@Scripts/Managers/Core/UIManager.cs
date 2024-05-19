@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,8 +14,10 @@ public class UIManager
     private int _toastOrder = 500;
 
     private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    Queue<UI_Toast> _toastStack = new Queue<UI_Toast>();
     private UI_Scene _sceneUI = null;
 
+    float _toastTime = 1.2f;
 
     public UI_Scene SceneUI
     {
@@ -163,6 +166,35 @@ public class UIManager
         _pupupOrder++;
         popup.UICanvas.sortingOrder = _pupupOrder;
         return popup as T;
+    }
+
+    public UI_Toast ShowToast(string msg)
+    {
+        string prefabPath = "UI/UI_Toast";
+        GameObject go = Managers.Resource.Instantiate(prefabPath, pooling: true);
+        UI_Toast popup = Util.GetOrAddComponent<UI_Toast>(go);
+        popup.SetInfo(msg);
+        _toastStack.Enqueue(popup);
+
+        CoroutineManager.StartCoroutine(CoCloseToastUI());
+        return popup;
+    }
+
+    IEnumerator CoCloseToastUI()
+    {
+        yield return new WaitForSeconds(_toastTime);
+        CloseToastUI();
+    }
+
+    public void CloseToastUI()
+    {
+        if (_toastStack.Count == 0)
+            return;
+
+        UI_Toast toast = _toastStack.Dequeue();
+        Managers.Resource.Destroy(toast.gameObject);
+        toast = null;
+        _toastOrder--;
     }
 
     public void ClosePopupUI(UI_Popup popup)

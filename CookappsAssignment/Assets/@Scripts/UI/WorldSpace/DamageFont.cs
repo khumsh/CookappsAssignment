@@ -23,7 +23,7 @@ public class DamageFont : BaseObject
         switch (damageResult)
         {
             case EDamageResult.Hit:
-                _damageText.fontSize = 8;
+                _damageText.fontSize = 7;
                 _damageText.color = Color.white;//Util.HexToColor("EFAD00");
                 _damageText.text = $"{Mathf.Abs((int)damage)}";
                 NormalDamageFont();
@@ -92,7 +92,7 @@ public class DamageFont : BaseObject
         Vector3 rotation = Random.Range(-1f, 1f) > 0f ? Vector3.forward * -20f : Vector3.forward * 20f;
 
         seq.Append(transform.DOScale(0.5f, 0.7f).SetEase(Ease.OutSine))
-        .Join(transform.DOMoveX(transform.position.x + randomX, 0.7f).SetEase(Ease.OutSine))
+        //.Join(transform.DOMoveX(transform.position.x + randomX, 0.7f).SetEase(Ease.OutSine))
         .Join(transform.DOMoveY(transform.position.y - 2.5f, 0.7f).SetEase(Ease.InSine))
         .Join(transform.DORotate(rotation, 0.7f))
         //.Append(transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBounce))

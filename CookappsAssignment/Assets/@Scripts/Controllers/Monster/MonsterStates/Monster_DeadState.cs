@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using DG.Tweening;
 
 public class Monster_DeadState : IState
 {
@@ -16,7 +17,18 @@ public class Monster_DeadState : IState
 
     public void Enter()
     {
+        monster.CreatureState = ECreatureState.Dead;
         monster.PlayAnimation(StateName);
+
+        foreach(var sp in monster.spriteRenderers)
+        {
+            sp.DOFade(0, 1).OnComplete(() =>
+            {
+                sp.color = Color.white;
+                Managers.Object.Despawn(monster);
+            });
+        }
+        
     }
 
     public void Update()
