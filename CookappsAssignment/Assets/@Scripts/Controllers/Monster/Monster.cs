@@ -8,6 +8,7 @@ public class Monster : Creature
 {
     public MonsterData MonsterData { get; private set; }
     public MonsterStats MonsterStats { get; private set; }
+    
 
     protected override bool Init()
     {
@@ -19,6 +20,8 @@ public class Monster : Creature
     public override void SetInfo(int templateId)
     {
         MonsterData = Managers.Data.MonsterDic[templateId];
+
+        SkillSystem.AddSkill(MonsterData.DefaultSkillId, ESkillType.Default);
 
         StatsInit();
         StateMachineInit();
@@ -64,6 +67,12 @@ public class Monster : Creature
         if (Mathf.Approximately(MonsterStats.Hp, 0))
         {
             OnDead();
+
+            Hero hero = attacker as Hero;
+            if (hero != null)
+            {
+                hero.AddExp(MONSTER_KILL_EXP);
+            }
         }
     }
 
@@ -75,6 +84,8 @@ public class Monster : Creature
         ChangeState(ECreatureState.Dead);
 
         Managers.Game.EnemyKillCount++;
+
+
     }
 
     

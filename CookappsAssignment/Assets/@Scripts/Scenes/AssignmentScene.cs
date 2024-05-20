@@ -8,7 +8,9 @@ using static Define;
 
 public class AssignmentScene : BaseScene
 {
+    public UI_AssignmentScene ui_scene;
     public CinemachineVirtualCamera virtualCamera;
+
 
     protected override bool Init()
     {
@@ -24,7 +26,12 @@ public class AssignmentScene : BaseScene
             Hero archer = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_ARCHER);
             Hero priest = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_PRIEST);
 
+            ui_scene.heroes = new Hero[4]{ knight, thief, archer, priest };
+            foreach(Hero hero in ui_scene.heroes)
+                hero.TriggerHeroUIInfo();
+
             virtualCamera.Follow = knight.transform;
+            //virtualCamera.Follow = thief.transform;
         }
         
 
@@ -53,7 +60,7 @@ public class AssignmentScene : BaseScene
             yield return wait;
 
             int spawnCount = Random.Range(1, stageData.MonsterMaxSpawnOnce + 1);
-            
+            //spawnCount = 1;
             for (int i = 0; i < spawnCount; i++)
             {
                 Vector2 spawnPos = Util.RandomPointInAnnulus(Managers.Object.Heroes.FirstOrDefault().Position, 5, 10);
@@ -63,9 +70,8 @@ public class AssignmentScene : BaseScene
             if (Managers.Game.EnemyKillCount >= 5)
             {
                 Managers.UI.ShowToast("Stage Clear!");
-                break;
+                //break;
             }
         }
     }
-
 }

@@ -1,2 +1,2 @@
-﻿DataId,PrefabPath,MaxHp,Atk,AtkCountPerSecond,AtkRange,MoveSpeed
-5001,Prefab/Monster,100,10,1,1,5
+﻿DataId,PrefabPath,MaxHp,Atk,AtkCountPerSecond,AtkRange,MoveSpeed,DefaultSkillId
+5001,Prefab/Monster,100,10,1,1,5,200001

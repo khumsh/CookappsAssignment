@@ -22,6 +22,8 @@ public class Hero_StunState : IState
 
         hero.CreatureState = ECreatureState.Stun;
         hero.PlayAnimation("Idle");
+
+        hero.Target = null;
     }
 
     public void Update()

@@ -6,13 +6,13 @@ using static Define;
 
 public class Skill
 {
-    public Hero Owner { get; private set; }
+    public Creature Owner { get; private set; }
     public SkillData SkillData { get; private set; }
 
     public EntityStateMachine StateMachine { get; protected set; }
 
     
-    public virtual void SetInfo(int templateId, Hero owner)
+    public virtual void SetInfo(int templateId, Creature owner)
     {
         Owner = owner;
         SkillData = Managers.Data.SkillDic[templateId];

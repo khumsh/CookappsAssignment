@@ -21,13 +21,14 @@ public class Stat
                 _value = CalculateFinalValue(); // 다시 계산
                 _isDirty = false;
             }
-            return _value;
+            return (int)_value;
         }
 
         private set { _value = value; }
     }
 
     public List<StatModifier> StatModifiers = new List<StatModifier>();
+    public event Action OnValueChanged;
 
     public Stat()
     {
@@ -42,6 +43,8 @@ public class Stat
     {
         _isDirty = true;
         StatModifiers.Add(modifier);
+
+        OnValueChanged?.Invoke();
     }
 
     public virtual bool RemoveModifier(StatModifier modifier)
@@ -49,6 +52,8 @@ public class Stat
         if (StatModifiers.Remove(modifier))
         {
             _isDirty = true;
+
+            OnValueChanged?.Invoke();
             return true;
         }
 
@@ -62,6 +67,8 @@ public class Stat
         if (numRemovals > 0)
         {
             _isDirty = true;
+
+            OnValueChanged?.Invoke();
             return true;
         }
         return false;

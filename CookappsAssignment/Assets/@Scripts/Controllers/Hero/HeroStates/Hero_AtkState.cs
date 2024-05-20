@@ -25,12 +25,6 @@ public class Hero_AtkState : IState
         hero.CreatureState = ECreatureState.Atk;
         hero.PlayAnimation(StateName);
 
-        Skill skill = hero.SkillSystem.GetUseableSkill();
-        if (skill != null) 
-            skill.UseSkill();
-        else
-            hero.ChangeState(ECreatureState.Idle);
-
         hero.Flip();
 
         hero.col2D.isTrigger = true;

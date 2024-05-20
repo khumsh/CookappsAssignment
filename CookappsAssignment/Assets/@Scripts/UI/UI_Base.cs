@@ -39,6 +39,11 @@ public abstract class UI_Base : InitBase
     protected void BindToggle(Type type) { Bind<Toggle>(type); }
     protected void BindSlider(Type type) { Bind<Slider>(type); }
 
+    protected T Get<T>(Enum _enum) where T : UnityEngine.Object
+    {
+        return Get<T>(Convert.ToInt32(_enum));
+    }
+
     protected T Get<T>(int idx) where T : UnityEngine.Object
     {
         UnityEngine.Object[] objects = null;
@@ -48,11 +53,22 @@ public abstract class UI_Base : InitBase
         return objects[idx] as T;
     }
 
+    protected GameObject GetObject(Enum _enum) { return Get<GameObject>(_enum); }
     protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
+
+    protected TMP_Text GetText(Enum _enum) { return Get<TMP_Text>(_enum); }
     protected TMP_Text GetText(int idx) { return Get<TMP_Text>(idx); }
+
+    protected Button GetButton(Enum _enum) { return Get<Button>(_enum); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
+
+    protected Image GetImage(Enum _enum) { return Get<Image>(_enum); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
+
+    protected Toggle GetToggle(Enum _enum) { return Get<Toggle>(_enum); }
     protected Toggle GetToggle(int idx) { return Get<Toggle>(idx); }
+
+    protected Slider GetSlider(Enum _enum) { return Get<Slider>(_enum); }
     protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
 
     public static void BindEvent(GameObject go, Action action = null, Action<PointerEventData> dragAction = null, Define.EUIEvent type = Define.EUIEvent.Click)

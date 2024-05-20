@@ -5,7 +5,8 @@ using static Util;
 
 public class Define
 {
-    // 하드 코딩 (기능 구현용 과제이므로...)
+    #region HARD CODING
+    // TEMP 하드 코딩
     public static int ID_HERO_KNIGHT = 2001;
     public static int ID_HERO_THIEF = 2002;
     public static int ID_HERO_ARCHER = 2003;
@@ -13,6 +14,16 @@ public class Define
     public static int ID_MONSTER_NORMAL = 5001;
 
     public static float DETECT_RANGE_MONSTER = 6f; // 과제 파일에 없어서 임의로 지정
+
+    public static float STAT_BONUS_MULT = 0.5f;
+
+    public static float MONSTER_KILL_EXP = 10;
+    public static float MAX_EXP_DEFAULT = 30;
+    public static float MAX_EXP_BONUS_MULT = 0.3f; // 레벨당 최대 경험치 30% 증가
+
+
+    #endregion
+
 
     #region Enum
 
@@ -88,7 +99,8 @@ public class Define
     {
         None,
         Closest,
-        MinHp
+        MinHp,
+        MinHpRatio
     }
 
     public enum EStatModType

@@ -99,10 +99,23 @@
       "AtkRate": 2.5,
       "TargetType": 0,
       "SkillTargetSearchType": 0,
-      "TargetSearchResult": 2,
+      "TargetSearchResult": 3,
       "canSelf": true,
       "SkillEffectTypes": [
         1
+      ]
+    },
+    {
+      "DataId": 200001,
+      "SkillName": "Skill_MonsterDefault",
+      "SkillType": 0,
+      "AtkRate": 1.0,
+      "TargetType": 0,
+      "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
+      "SkillEffectTypes": [
+        0
       ]
     }
   ]

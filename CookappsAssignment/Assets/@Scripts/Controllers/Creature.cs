@@ -11,9 +11,11 @@ public class Creature : BaseObject
 {
     public ECreatureState CreatureState { get; set; }
     public EntityStateMachine StateMachine { get; protected set; }
+    public SkillSystem SkillSystem { get; private set; }
 
     [Header("Components")]
     public Animator animator;
+    public AnimationEventHandler animEvtHandler;
     public Collider2D col2D;
     public SpriteRenderer[] spriteRenderers;
     
@@ -31,6 +33,8 @@ public class Creature : BaseObject
         if (!base.Init())
             return false;
 
+        SkillSystem = gameObject.GetComponent<SkillSystem>();
+
         return true;
     }
 
@@ -46,6 +50,16 @@ public class Creature : BaseObject
         {
             hpBar.SetInfo(this);
         }
+
+        animEvtHandler.SetAllEventNull();
+        animEvtHandler.OnAttack += () =>
+        {
+            Skill skill = SkillSystem.GetUseableSkill();
+            if (skill != null)
+                skill.UseSkill();
+            else
+                ChangeState(ECreatureState.Idle);
+        };
 
     }
 
@@ -124,6 +138,23 @@ public class Creature : BaseObject
                     }
 
                     return minHpTarget;
+                case ETargetSearchResult.MinHpRatio:
+                    Creature minHpRatioTarget = null;
+                    float minHpRatio = float.MaxValue;
+                    foreach (Creature target in targets)
+                    {
+                        float hpRatio = (targetType == ETargetType.Hero) ?
+                            (target as Hero).HeroStats.Hp / (target as Hero).HeroStats.MaxHp.Value 
+                            : (target as Monster).MonsterStats.Hp / (target as Monster).MonsterStats.MaxHp.Value;
+
+                        if (hpRatio < minHpRatio)
+                        {
+                            minHpTarget = target;
+                            minHpRatio = hpRatio;
+                        }
+                    }
+
+                    return minHpRatioTarget;
             }
             
         }

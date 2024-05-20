@@ -46,9 +46,13 @@ public class Hero_IdleState : IState
                 hero.ChangeState(ECreatureState.Atk);
                 return;
             }
+            else if (!(isInSkillRange && isInAtkRange))
+            {
+                hero.ChangeState(ECreatureState.Move);
+                return;
+            }
         }
-
-        // Search Target
+        else // Search Target
         {
             Creature target = hero.GetTargetInRange(hero.Position, detectRange, ETargetType.Monster);
             if (target.IsValid())

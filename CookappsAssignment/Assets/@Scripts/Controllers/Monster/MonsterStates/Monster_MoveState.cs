@@ -26,7 +26,7 @@ public class Monster_MoveState : IState
 
         if (moveState == EMoveState.Patrol)
         {
-            destPos = monster.Position + new Vector3(Random.Range(-2, 2), Random.Range(-2, 2));
+            destPos = Util.GenerateRandomPositionOnCircle(monster.Position, 2.5f);
         }
 
         Debug.Log($"{monster.name} : Enter [{StateName}] State\n" +
@@ -47,7 +47,7 @@ public class Monster_MoveState : IState
             }
         }
         // 추적
-        else if (moveState == EMoveState.Chase)
+        else if (moveState == EMoveState.Chase && monster.Target.IsValid())
         {
             Vector3 dir = monster.Target.Position - monster.Position;
             float distToTargetSqr = dir.sqrMagnitude;
@@ -57,6 +57,7 @@ public class Monster_MoveState : IState
             if (distToTargetSqr < atkRangeSqr)
             {
                 // 공격 범위 이내라면 공격 상태로 전이
+                Debug.Log("Monster Move -> Attack");
                 monster.ChangeState(ECreatureState.Atk);
             }
             else if (distToTargetSqr < detectRangeSqr)
@@ -67,8 +68,14 @@ public class Monster_MoveState : IState
             else
             {
                 // 감지 범위 밖이라면 추적 종료
+                monster.Target = null;
                 monster.ChangeState(ECreatureState.Idle);
             }
+        }
+        else
+        {
+            monster.Target = null;
+            monster.ChangeState(ECreatureState.Idle);
         }
     }
 

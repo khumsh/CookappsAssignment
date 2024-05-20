@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5158762939998574864}
   - component: {fileID: 1638563267562234245}
   - component: {fileID: 4196301282092746630}
+  - component: {fileID: 6344484077745033580}
   m_Layer: 8
   m_Name: Monster
   m_TagString: Untagged
@@ -138,6 +139,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6344484077745033580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5085405977604965779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 998d15ea49b3f7a4193354879a7280fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7988545859562375077
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +163,7 @@ GameObject:
   - component: {fileID: -8774364764581867850}
   - component: {fileID: 5037106994489249855}
   - component: {fileID: 2373508050593307070}
+  - component: {fileID: 6218876538606334601}
   m_Layer: 8
   m_Name: Monster
   m_TagString: Untagged
@@ -235,7 +249,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &2373508050593307070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,12 +263,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4196301282092746630}
+  animEvtHandler: {fileID: 6344484077745033580}
   col2D: {fileID: -8774364764581867850}
   spriteRenderers:
   - {fileID: 1638563267562234245}
   hpBar: {fileID: 7118596193268289003}
   view: {fileID: 1359686339690417027}
   isLeftFacing: 0
+--- !u!114 &6218876538606334601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7988545859562375077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3261679718977468ebaf305c992b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3766779618022315254
 PrefabInstance:
   m_ObjectHideFlags: 0

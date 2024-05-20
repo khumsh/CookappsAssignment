@@ -7,7 +7,7 @@ using static Define;
 public class Skill_UseState : IState
 {
     private Skill skill;
-    private Hero Owner => skill.Owner;
+    private Creature Owner => skill.Owner;
     private SkillData skillData => skill.SkillData;
 
     public string StateName => ESkillState.Use.ToString();
@@ -23,7 +23,16 @@ public class Skill_UseState : IState
 
         // 타겟 서치용 값
         Vector3 SearchPoint = Owner.transform.position;
-        float SearchRange = (skillData.SkillType == ESkillType.Default) ? Owner.HeroData.DefaultAtkRange : Owner.HeroData.SkillRange;
+        float SearchRange;
+        
+        if (Owner.IsPlayer)
+        {
+            SearchRange = (skillData.SkillType == ESkillType.Default) ? (Owner as Hero).HeroData.DefaultAtkRange : (Owner as Hero).HeroData.SkillRange;
+        }
+        else
+        {
+            SearchRange = (Owner as Monster).MonsterStats.AtkRange.Value;
+        }
 
         // 단일 스킬
         if (skillData.SkillTargetSearchType == ESkillTargetSearchType.Single)
@@ -54,12 +63,13 @@ public class Skill_UseState : IState
                     }
                 }
             }
-            
-            
         }
 
         if (skill.SkillData.SkillType == ESkillType.Special)
-            Managers.Object.ShowFloatingText("Special Skill!", Owner.Position, Color.yellow);
+        {
+            Managers.Object.ShowFloatingText("Special Skill!", Owner.Position + Vector3.up, Util.HexToColor("FFA237"));
+            Managers.Resource.Instantiate("Effect/ChargeEffect", Owner.transform);
+        }
 
         // 스킬 쿨다운 상태로 전이
         skill.ChangeState(ESkillState.Cooldown);
@@ -79,7 +89,16 @@ public class Skill_UseState : IState
     {
         if (!target.IsValid()) return;
 
-        float value = Owner.HeroStats.Atk.Value * skillData.AtkRate;
+        float value;
+        
+        if (Owner.IsPlayer)
+        {
+            value = (Owner as Hero).HeroStats.Atk.Value * skillData.AtkRate;
+        }
+        else
+        {
+            value = (Owner as Monster).MonsterStats.Atk.Value * skillData.AtkRate;
+        }
 
         switch (skillEffectType)
         {

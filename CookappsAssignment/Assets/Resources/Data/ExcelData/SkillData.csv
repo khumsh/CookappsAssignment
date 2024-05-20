@@ -6,4 +6,5 @@
 100005,Skill_ArcherDefault,Default,1,Monster,Single,Closest,FALSE,DealDamage
 100006,Skill_ArcherSpecial,Special,2.5,Monster,Single,Closest,FALSE,DealDamage
 100007,Skill_PriestDefault,Default,1,Monster,Single,Closest,FALSE,DealDamage
-100008,Skill_PriestSpecial,Special,2.5,Hero,Single,MinHp,TRUE,Heal
+100008,Skill_PriestSpecial,Special,2.5,Hero,Single,MinHpRatio,TRUE,Heal
+200001,Skill_MonsterDefault,Default,1,Hero,Single,Closest,FALSE,DealDamage

@@ -27,8 +27,9 @@ public class Hero_DeadState : IState
     {
         if (hero.StateMachine.stateTimer > 5 && !Managers.Game.IsGameOver)
         {
-            hero.SetInfo(hero.HeroData.DataId);
             hero.ChangeState(ECreatureState.Idle);
+
+            hero.HeroStats.Hp = hero.HeroStats.MaxHp.Value;
             hero.transform.DOLocalJump(Vector3.up * 0.5f, 1, 1, 0.5f);
             Managers.Resource.Instantiate("Effect/Revival", hero.transform);
         }
@@ -37,5 +38,6 @@ public class Hero_DeadState : IState
     public void Exit()
     {
         hero.col2D.isTrigger = false;
+        hero.Target = null;
     }
 }

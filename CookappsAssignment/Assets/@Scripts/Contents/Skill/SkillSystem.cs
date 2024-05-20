@@ -7,7 +7,7 @@ using static Define;
 
 public class SkillSystem : MonoBehaviour
 {
-    public Hero Owner { get; private set; }
+    public Creature Owner { get; private set; }
 
     public List<Skill> SkillList { get; private set; } = new List<Skill>();
     public Skill DefaultSkill { get; private set; }
@@ -15,7 +15,7 @@ public class SkillSystem : MonoBehaviour
 
     private void Awake()
     {
-        Owner = GetComponent<Hero>();
+        Owner = GetComponent<Creature>();
     }
 
     public void AddSkill(int skillId, ESkillType skillType)
@@ -52,15 +52,16 @@ public class SkillSystem : MonoBehaviour
 
     public bool IsUseableSkill()
     {
-        return SpecialSkill.IsReady() || DefaultSkill.IsReady();
+        return (SpecialSkill != null && SpecialSkill.IsReady()) 
+            || (DefaultSkill != null && DefaultSkill.IsReady());
     }
 
     // 사용가능한 스킬 get
     public Skill GetUseableSkill()
     {
-        if (SpecialSkill.IsReady())
+        if (SpecialSkill != null && SpecialSkill.IsReady())
             return SpecialSkill;
-        else if (DefaultSkill.IsReady())
+        else if (DefaultSkill != null && DefaultSkill.IsReady())
             return DefaultSkill;
         else
             return null;

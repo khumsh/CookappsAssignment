@@ -48,6 +48,7 @@ namespace Data
         public float AtkCountPerSecond; // 초당 공격 횟수
         public float AtkRange;
         public float MoveSpeed;
+        public int DefaultSkillId;
     }
 
     [Serializable]
