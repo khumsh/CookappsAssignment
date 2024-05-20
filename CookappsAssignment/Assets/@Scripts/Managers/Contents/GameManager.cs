@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager
 {
+    public int StageLevel { get; set; } = 1;
     public int EnemyKillCount { get; set; } = 0;
     public bool IsGameOver { get; set; } = false;
 }

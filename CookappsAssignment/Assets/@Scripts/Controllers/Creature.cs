@@ -86,25 +86,46 @@ public class Creature : BaseObject
 
     }
 
-    public Creature GetTargetInRange(Vector3 point, float range, ETargetType targetType, bool canSelf = false)
+    public Creature GetTargetInRange(Vector3 point, float range, ETargetType targetType, ETargetSearchResult targetSearchResult = ETargetSearchResult.Closest, bool canSelf = false)
     {
         Creature[] targets = GetTargetsInRange(point, range, targetType, canSelf);
         if (targets != null && targets.Length > 0)
         {
-            // 가장 가까운 타겟 찾기
-            Creature closestTarget = null;
-            float closestDistSqr = float.MaxValue;
-            foreach (Creature target in targets) 
+            switch(targetSearchResult)
             {
-                float distSqr = (target.Position - Position).sqrMagnitude;
-                if (distSqr < closestDistSqr)
-                {
-                    closestDistSqr = distSqr;
-                    closestTarget = target;
-                }
-            }
+                case ETargetSearchResult.Closest:
+                    // 가장 가까운 타겟 찾기
+                    Creature closestTarget = null;
+                    float closestDistSqr = float.MaxValue;
+                    foreach (Creature target in targets)
+                    {
+                        float distSqr = (target.Position - Position).sqrMagnitude;
+                        if (distSqr < closestDistSqr)
+                        {
+                            closestDistSqr = distSqr;
+                            closestTarget = target;
+                        }
+                    }
 
-            return closestTarget;
+                    return closestTarget;
+                case ETargetSearchResult.MinHp:
+                    Creature minHpTarget = null;
+                    float minHp = float.MaxValue;
+                    foreach (Creature target in targets)
+                    {
+                        float hp = (targetType == ETargetType.Hero) ?
+                            (target as Hero).HeroStats.Hp : (target as Monster).MonsterStats.Hp;
+                        
+                        if (hp < minHp)
+                        {
+                            minHpTarget = target;
+                            minHp = hp;
+                        }
+                    }
+
+                    return minHpTarget;
+            }
+            
         }
             
 

@@ -7,6 +7,8 @@
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
       "SkillEffectTypes": [
         0
       ]
@@ -18,6 +20,8 @@
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
       "SkillEffectTypes": [
         0,
         2
@@ -30,6 +34,8 @@
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
       "SkillEffectTypes": [
         0
       ]
@@ -41,6 +47,8 @@
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 1,
+      "TargetSearchResult": 0,
+      "canSelf": false,
       "SkillEffectTypes": [
         0
       ]
@@ -52,6 +60,8 @@
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
       "SkillEffectTypes": [
         0
       ]
@@ -63,6 +73,8 @@
       "AtkRate": 2.5,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
       "SkillEffectTypes": [
         0
       ]
@@ -74,6 +86,8 @@
       "AtkRate": 1.0,
       "TargetType": 1,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 1,
+      "canSelf": false,
       "SkillEffectTypes": [
         0
       ]
@@ -85,6 +99,8 @@
       "AtkRate": 2.5,
       "TargetType": 0,
       "SkillTargetSearchType": 0,
+      "TargetSearchResult": 2,
+      "canSelf": true,
       "SkillEffectTypes": [
         1
       ]

@@ -29,7 +29,7 @@ public class Skill_UseState : IState
         if (skillData.SkillTargetSearchType == ESkillTargetSearchType.Single)
         {
             // 범위 내 타겟 서치
-            Creature target = Owner.GetTargetInRange(SearchPoint, SearchRange, skillData.TargetType);
+            Creature target = Owner.GetTargetInRange(SearchPoint, SearchRange, skillData.TargetType, skillData.TargetSearchResult, skillData.canSelf);
 
             // 타겟에게 이펙트 적용
             foreach (ESkillEffectType effectType in skillData.SkillEffectTypes)
@@ -41,7 +41,7 @@ public class Skill_UseState : IState
         else if (skillData.SkillTargetSearchType == ESkillTargetSearchType.Range)
         {
             // 범위 내 타겟 전부 서치
-            Creature[] targets = Owner.GetTargetsInRange(SearchPoint, SearchRange, skillData.TargetType);
+            Creature[] targets = Owner.GetTargetsInRange(SearchPoint, SearchRange, skillData.TargetType, skillData.canSelf);
 
             if (targets != null && targets.Length > 0) 
             {
@@ -77,24 +77,21 @@ public class Skill_UseState : IState
 
     private void ApplyEffect(Creature target, ESkillEffectType skillEffectType)
     {
+        if (!target.IsValid()) return;
+
         float value = Owner.HeroStats.Atk.Value * skillData.AtkRate;
 
         switch (skillEffectType)
         {
             case ESkillEffectType.DealDamage:
-                if (target.IsValid())
-                    target.OnDamaged(value, Owner, skill);
+                target.OnDamaged(value, Owner, skill);
                 break;
             case ESkillEffectType.Heal:
-                if (target.IsValid())
-                    target.OnDamaged(-value, Owner, skill);
+                target.OnDamaged(-value, Owner, skill);
                 break;
             case ESkillEffectType.Stun:
-                if (target.IsValid())
-                {
-                    target.StateMachine.SetState(ECreatureState.Stun.ToString());
-                    Managers.Object.ShowFloatingText("Stun!", target.Position + Vector3.up, Color.white);
-                }
+                target.StateMachine.SetState(ECreatureState.Stun.ToString());
+                Managers.Object.ShowFloatingText("Stun!", target.Position + Vector3.up, Color.white);
                 break;  
         }
     }

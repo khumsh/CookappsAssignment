@@ -84,6 +84,13 @@ public class Define
         CriticalHeal
     }
 
+    public enum ETargetSearchResult
+    {
+        None,
+        Closest,
+        MinHp
+    }
+
     public enum EStatModType
     {
         Add, // 그냥 합산

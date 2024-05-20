@@ -17,14 +17,20 @@ public class AssignmentScene : BaseScene
 
         Managers.Data.Init();
 
-        Hero knight = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_KNIGHT);
-        Hero thief = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_THIEF);
-        Hero archer = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_ARCHER);
-        Hero priest = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_PRIEST);
+        // Spawn Hero
+        {
+            Hero knight = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_KNIGHT);
+            Hero thief = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_THIEF);
+            Hero archer = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_ARCHER);
+            Hero priest = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_PRIEST);
 
-        virtualCamera.Follow = knight.transform;
+            virtualCamera.Follow = knight.transform;
+        }
+        
 
-        StartCoroutine(StartStageCo(1));
+        Managers.Game.StageLevel = 1;
+
+        StartCoroutine(StartStageCo(Managers.Game.StageLevel));
 
         return true;
     }

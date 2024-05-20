@@ -97,6 +97,8 @@ namespace Data
         public float AtkRate;
         public ETargetType TargetType;
         public ESkillTargetSearchType SkillTargetSearchType; // 단일, 범위
+        public ETargetSearchResult TargetSearchResult;
+        public bool canSelf;
         public List<ESkillEffectType> SkillEffectTypes = new List<ESkillEffectType>(); // 공격, 회복, 스턴
     }
     [Serializable]

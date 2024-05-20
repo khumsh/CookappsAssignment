@@ -16,6 +16,12 @@ public class Hero_AtkState : IState
 
     public void Enter()
     {
+        if (!hero.Target.IsValid())
+        {
+            hero.ChangeState(ECreatureState.Idle);
+            return;
+        }
+
         hero.CreatureState = ECreatureState.Atk;
         hero.PlayAnimation(StateName);
 

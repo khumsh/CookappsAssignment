@@ -29,17 +29,23 @@ public class Hero_IdleState : IState
     {
         if (hero.Target.IsValid())
         {
-            bool canUseSpecialSkill = GetDistSqrToTarget() <= heroStats.SkillRange.Value * heroStats.SkillRange.Value
-                && hero.SkillSystem.SpecialSkill.IsReady();
-            bool canUseDefaultSkill = GetDistSqrToTarget() <= heroStats.DefaultAtkRange.Value * heroStats.DefaultAtkRange.Value
-                && hero.SkillSystem.DefaultSkill.IsReady();
+            bool isInSkillRange = GetDistSqrToTarget() <= heroStats.SkillRange.Value * heroStats.SkillRange.Value;
+            bool isInAtkRange = GetDistSqrToTarget() <= heroStats.DefaultAtkRange.Value * heroStats.DefaultAtkRange.Value;
+
+            if (!isInSkillRange && !isInAtkRange)
+            {
+                hero.ChangeState(ECreatureState.Move);
+                return;
+            }   
+
+            bool canUseSpecialSkill = isInSkillRange && hero.SkillSystem.SpecialSkill.IsReady();
+            bool canUseDefaultSkill = isInAtkRange && hero.SkillSystem.DefaultSkill.IsReady();
 
             if (canUseSpecialSkill || canUseDefaultSkill)
             {
                 hero.ChangeState(ECreatureState.Atk);
+                return;
             }
-
-            return;
         }
 
         // Search Target
@@ -51,7 +57,6 @@ public class Hero_IdleState : IState
                 hero.ChangeState(ECreatureState.Move);
             }
         }
-
     }
 
     public void Exit()

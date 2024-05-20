@@ -27,16 +27,15 @@ public class Hero_MoveState : IState
     {
         if (hero.Target.IsValid())
         {
-            MoveToTarget();
+            bool isInSkillRange = GetDistSqrToTarget() <= heroStats.SkillRange.Value * heroStats.SkillRange.Value;
+            bool isInAtkRange = GetDistSqrToTarget() <= heroStats.DefaultAtkRange.Value * heroStats.DefaultAtkRange.Value;
 
-            bool canUseSpecialSkill = GetDistSqrToTarget() <= heroStats.SkillRange.Value * heroStats.SkillRange.Value
-                && hero.SkillSystem.SpecialSkill.IsReady();
-            bool canUseDefaultSkill = GetDistSqrToTarget() <= heroStats.DefaultAtkRange.Value * heroStats.DefaultAtkRange.Value
-                && hero.SkillSystem.DefaultSkill.IsReady();
-
-            if (canUseSpecialSkill || canUseDefaultSkill)
+            if (!isInSkillRange && !isInAtkRange)
+                MoveToTarget();
+            else
             {
                 hero.ChangeState(ECreatureState.Atk);
+                return;
             }
         }
         else
