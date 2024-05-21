@@ -128,6 +128,7 @@ namespace Data
         public float HeroRespawnTime;
         public float MonsterRespawnTime;
         public int MonsterMaxSpawnOnce;
+        public int ClearKillCount;
     }
     [Serializable]
     public class StageDataLoader : ILoader<int, StageData>

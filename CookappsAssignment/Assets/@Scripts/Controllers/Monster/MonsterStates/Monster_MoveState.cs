@@ -29,8 +29,8 @@ public class Monster_MoveState : IState
             destPos = Util.GenerateRandomPositionOnCircle(monster.Position, 2.5f);
         }
 
-        Debug.Log($"{monster.name} : Enter [{StateName}] State\n" +
-            $"MoveState : {moveState}");
+        //Debug.Log($"{monster.name} : Enter [{StateName}] State\n" +
+            //$"MoveState : {moveState}");
     }
 
     public void Update()
@@ -57,7 +57,6 @@ public class Monster_MoveState : IState
             if (distToTargetSqr < atkRangeSqr)
             {
                 // 공격 범위 이내라면 공격 상태로 전이
-                Debug.Log("Monster Move -> Attack");
                 monster.ChangeState(ECreatureState.Atk);
             }
             else if (distToTargetSqr < detectRangeSqr)

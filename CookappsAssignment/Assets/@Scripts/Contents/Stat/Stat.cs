@@ -41,9 +41,27 @@ public class Stat
 
     public virtual void AddModifier(StatModifier modifier)
     {
-        _isDirty = true;
         StatModifiers.Add(modifier);
+        modifier.OnValueChanged += OnModifierValueChanged;
 
+        _isDirty = true;
+        OnValueChanged?.Invoke();
+    }
+
+    public virtual void AddOrUpdateModifier(object source, EStatModType type, float amount)
+    {
+        StatModifier existingModifier = StatModifiers.Find(mod => mod.Source == source && mod.Type == type);
+        if (existingModifier != null) // 기존 Modifier가 있으면
+        {
+            // 기존 Modifier의 값 업데이트
+            existingModifier.UpdateValue(amount);
+        }
+        else // 기존 Modifier가 없으면
+        {
+            // 새 Modifier 추가
+            StatModifiers.Add(new StatModifier(amount, type, source));
+        }
+        _isDirty = true;
         OnValueChanged?.Invoke();
     }
 
@@ -51,6 +69,7 @@ public class Stat
     {
         if (StatModifiers.Remove(modifier))
         {
+            modifier.OnValueChanged -= OnModifierValueChanged;
             _isDirty = true;
 
             OnValueChanged?.Invoke();
@@ -105,5 +124,10 @@ public class Stat
         }
 
         return (float)Math.Round(finalValue, 4);
+    }
+
+    private void OnModifierValueChanged(StatModifier modifier)
+    {
+        _isDirty = true;
     }
 }

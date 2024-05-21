@@ -11,7 +11,7 @@ public class AssignmentScene : BaseScene
     public UI_AssignmentScene ui_scene;
     public CinemachineVirtualCamera virtualCamera;
 
-
+    int lastValidStageIndex;
 
     protected override bool Init()
     {
@@ -19,7 +19,7 @@ public class AssignmentScene : BaseScene
             return false;
 
         Managers.Data.Init();
-
+        Managers.Game.Init();
         
 
         return true;
@@ -40,8 +40,12 @@ public class AssignmentScene : BaseScene
             //virtualCamera.Follow = thief.transform;
         }
 
-        Managers.Game.Gold = 0;
-        Managers.Game.StageLevel = 1;
+        Managers.Game.OnStageClear += () => 
+        {
+            Managers.Game.StageLevel++;
+            StartCoroutine(StartStageCo(Managers.Game.StageLevel)); 
+        };
+
         StartCoroutine(StartStageCo(Managers.Game.StageLevel));
     }
 
@@ -52,25 +56,38 @@ public class AssignmentScene : BaseScene
 
     IEnumerator StartStageCo(int stageIndex)
     {
-        StageData stageData = Managers.Data.StageDic[stageIndex];
+        StageData stageData;
+        if (Managers.Data.StageDic.ContainsKey(stageIndex))
+        {
+            stageData = Managers.Data.StageDic[stageIndex];
+            lastValidStageIndex = stageIndex;
+        }
+        else
+        {
+            stageData = Managers.Data.StageDic[lastValidStageIndex];
+        }
+
+
+        yield return new WaitForSeconds(2f);
 
         var wait = new WaitForSeconds(stageData.MonsterRespawnTime);
 
         Managers.Game.EnemyKillCount = 0;
 
+        Managers.UI.ShowToast($"Stage{stageIndex}");
+        EventManager.TriggerEvent(UIEvent_GameScene.StageChanged);
+
         while (true)
         {
-            yield return wait;
-
             int spawnCount = Random.Range(1, stageData.MonsterMaxSpawnOnce + 1);
-            //spawnCount = 1;
+
             for (int i = 0; i < spawnCount; i++)
             {
                 Vector2 spawnPos = Util.RandomPointInAnnulus(Managers.Object.Heroes.FirstOrDefault().Position, 5, 10);
                 Managers.Object.Spawn<Monster>(spawnPos, ID_MONSTER_NORMAL);
             }
 
-            if (Managers.Game.EnemyKillCount >= 5)
+            if (Managers.Game.EnemyKillCount >= stageData.ClearKillCount)
             {
                 Managers.UI.ShowToast("Boss Spawned!");
                 Vector2 spawnPos = Util.RandomPointInAnnulus(Managers.Object.Heroes.FirstOrDefault().Position, 5, 10);
@@ -78,6 +95,8 @@ public class AssignmentScene : BaseScene
                 EventManager.TriggerEvent(UIEvent_GameScene.SpawnBoss);
                 break;
             }
+
+            yield return wait;
         }
     }
 }

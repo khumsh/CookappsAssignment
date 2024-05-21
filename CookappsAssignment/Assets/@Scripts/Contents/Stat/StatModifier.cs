@@ -3,10 +3,12 @@ using static Define;
 
 public class StatModifier : IComparable<StatModifier>
 {
-    public readonly float Value;
+    public float Value { get; private set; }
     public readonly EStatModType Type;
     public readonly int Order;
     public readonly object Source;
+
+    public event Action<StatModifier> OnValueChanged;
 
     public StatModifier(float value, EStatModType type, int order, object source)
     {
@@ -21,6 +23,15 @@ public class StatModifier : IComparable<StatModifier>
     public StatModifier(float value, EStatModType type, int order) : this(value, type, order, null) { }
 
     public StatModifier(float value, EStatModType type, object source) : this(value, type, (int)type, source) { }
+
+    public void UpdateValue(float newValue)
+    {
+        if (Value != newValue) 
+        {
+            Value = newValue;
+            OnValueChanged?.Invoke(this);
+        }
+    }
 
     public int CompareTo(StatModifier other)
     {

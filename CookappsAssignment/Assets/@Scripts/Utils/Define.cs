@@ -138,6 +138,13 @@ public class Define
         Boss
     }
 
+    public enum EStatModSource
+    {
+        LevelUp,
+        Gold,
+
+    }
+
     #endregion
 
 }

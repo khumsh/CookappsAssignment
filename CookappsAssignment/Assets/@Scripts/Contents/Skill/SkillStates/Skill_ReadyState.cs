@@ -16,7 +16,7 @@ public class Skill_ReadyState : IState
 
     public void Enter()
     {
-        Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State");
+        //Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State");
     }
 
     public void Update()

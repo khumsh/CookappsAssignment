@@ -33,19 +33,21 @@ public struct UIEvent_HeroSlot
     }
 }
 
-public enum UIEvent_GameScene { GoldChanged, SpawnBoss}
+public enum UIEvent_GameScene { GoldChanged, SpawnBoss, StageChanged, HeroRevive }
 
 public class UI_AssignmentScene : UI_Scene, EventListener<UIEvent_HeroSlot>, EventListener<UIEvent_GameScene>
 {
     enum Objects
     {
         BossHpBar,
+        StatBuffButton
     }
 
 
     enum Texts
     {
         GoldValueText,
+        StageInfoText,
 
         // LevelText
         Hero1_LevelText,
@@ -163,7 +165,8 @@ public class UI_AssignmentScene : UI_Scene, EventListener<UIEvent_HeroSlot>, Eve
         GetText(Texts.Hero3_RevivalTimeText).text = "";
         GetText(Texts.Hero4_RevivalTimeText).text = "";
 
-        GetObject(Objects.BossHpBar).gameObject.SetActive(false);
+        GetObject(Objects.BossHpBar).SetActive(false);
+        GetObject(Objects.StatBuffButton).BindEvent(OpenStatBuffPopup);
     }
 
     private void OnEnable()
@@ -199,6 +202,9 @@ public class UI_AssignmentScene : UI_Scene, EventListener<UIEvent_HeroSlot>, Eve
                 break;
             case UIEvent_GameScene.SpawnBoss:
                 OnBossSpawned();
+                break;
+            case UIEvent_GameScene.StageChanged:
+                GetText(Texts.StageInfoText).text = $"Stage{Managers.Game.StageLevel}";
                 break;
         }
     }
@@ -386,7 +392,7 @@ public class UI_AssignmentScene : UI_Scene, EventListener<UIEvent_HeroSlot>, Eve
 
     private void OnBossSpawned()
     {
-        GetObject(Objects.BossHpBar).gameObject.SetActive(true);
+        GetObject(Objects.BossHpBar).SetActive(true);
         UI_HPBar bossHpBar = GetObject(Objects.BossHpBar).GetComponent<UI_HPBar>();
 
         if (bossHpBar == null)
@@ -410,5 +416,10 @@ public class UI_AssignmentScene : UI_Scene, EventListener<UIEvent_HeroSlot>, Eve
             }
                 
         }
+    }
+
+    private void OpenStatBuffPopup()
+    {
+        Managers.UI.ShowPopupUI<UI_StatBuffPopup>();
     }
 }

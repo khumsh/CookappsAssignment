@@ -18,7 +18,7 @@ public class Hero_StunState : IState
 
     public void Enter()
     {
-        Debug.Log($"{hero.name} : Enter [{StateName}] State");
+        //Debug.Log($"{hero.name} : Enter [{StateName}] State");
 
         hero.CreatureState = ECreatureState.Stun;
         hero.PlayAnimation("Idle");

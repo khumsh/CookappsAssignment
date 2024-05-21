@@ -8,7 +8,7 @@ public class Hero_IdleState : IState
     private Hero hero;
     private HeroStats heroStats => hero.HeroStats;
     
-    private float detectRange = 30; // 과제 파일에 없어서 임의로 지정
+    private float detectRange = 30;
 
     public string StateName => ECreatureState.Idle.ToString();
 
@@ -19,7 +19,7 @@ public class Hero_IdleState : IState
 
     public void Enter()
     {
-        Debug.Log($"{hero.name} : Enter [{StateName}] State");
+        //Debug.Log($"{hero.name} : Enter [{StateName}] State");
 
         hero.CreatureState = ECreatureState.Idle;
         hero.PlayAnimation(StateName);

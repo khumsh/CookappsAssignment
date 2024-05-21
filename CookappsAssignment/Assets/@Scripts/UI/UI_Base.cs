@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -107,7 +108,7 @@ public abstract class UI_Base : InitBase
     public void PopupOpenAnimation(GameObject contentObject) // 팝업 오픈 연출
     {
         //연출 후에 수정
-        //contentObject.transform.localScale = new Vector3(0.8f,0.8f,1);
-        //contentObject.transform.DOScale(1f, 0.1f).SetEase(Ease.InOutBack).SetUpdate(true);
+        contentObject.transform.localScale = new Vector3(0.8f, 0.8f, 1);
+        contentObject.transform.DOScale(1f, 0.1f).SetEase(Ease.InOutBack).SetUpdate(true);
     }
 }

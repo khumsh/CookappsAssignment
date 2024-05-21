@@ -42,7 +42,6 @@ public class Monster_IdleState : IState
             if (canUseDefaultSkill) // 공격 가능 상태면
             {
                 // 즉시 Atk 상태로 전이
-                Debug.Log("Monster Idle -> Attack");
                 monster.ChangeState(ECreatureState.Atk);
                 return;
             }

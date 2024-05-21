@@ -50,8 +50,18 @@ public class Hero : Creature
             maxExp = (int)HeroStats.MaxExp.Value,
             exp = (int)HeroStats.Exp,
         };
-
+        
         TriggerHeroUIInfo();
+
+        Managers.Game.OnAtkBuffLevelChanged += () =>
+        {
+            HeroStats.Atk.AddOrUpdateModifier(EStatModSource.Gold, EStatModType.PercentMult, Managers.Game.AtkStatBuffPercentAmount);
+        };
+
+        Managers.Game.OnHpBuffLevelChanged += () =>
+        {
+            HeroStats.MaxHp.AddOrUpdateModifier(EStatModSource.Gold, EStatModType.PercentMult, Managers.Game.HpStatBuffPercentAmount);
+        };
     }
 
     protected void StatsInit()
@@ -71,6 +81,7 @@ public class Hero : Creature
         HeroStats.Level = 1;
 
         HeroStats.MaxHp.OnValueChanged += OnHpChanged;
+        HeroStats.Atk.OnValueChanged += TriggerHeroUIInfo;
     }
 
     protected void SkillInit()
@@ -136,15 +147,13 @@ public class Hero : Creature
 
     public void LevelUp()
     {
-        string modSource = "LevelUp";
-
         HeroStats.Level += 1;
         HeroStats.Exp = 0;
 
-        HeroStats.MaxExp.AddModifier(new StatModifier(MAX_EXP_BONUS_MULT, EStatModType.PercentMult, source: modSource));
+        HeroStats.MaxExp.AddOrUpdateModifier(EStatModSource.LevelUp, EStatModType.PercentMult, MAX_EXP_BONUS_MULT);
 
-        HeroStats.Atk.AddModifier(new StatModifier(STAT_BONUS_MULT, EStatModType.PercentMult, source: modSource));
-        HeroStats.MaxHp.AddModifier(new StatModifier(STAT_BONUS_MULT, EStatModType.PercentMult, source: modSource));
+        HeroStats.Atk.AddOrUpdateModifier(EStatModSource.LevelUp, EStatModType.PercentMult, STAT_BONUS_MULT);
+        HeroStats.MaxHp.AddOrUpdateModifier(EStatModSource.LevelUp, EStatModType.PercentMult, STAT_BONUS_MULT);
         HeroStats.Hp = HeroStats.MaxHp.Value;
         
         Managers.Object.ShowFloatingText("Level Up!", Position + Vector3.up * 2, Color.yellow, 6);

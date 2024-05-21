@@ -17,7 +17,7 @@ public class Hero_MoveState : IState
 
     public void Enter()
     {
-        Debug.Log($"{hero.name} : Enter [{StateName}] State");
+        //Debug.Log($"{hero.name} : Enter [{StateName}] State");
 
         hero.CreatureState = ECreatureState.Move;
         hero.PlayAnimation(StateName);
@@ -30,11 +30,17 @@ public class Hero_MoveState : IState
             bool isInSkillRange = GetDistSqrToTarget() <= heroStats.SkillRange.Value * heroStats.SkillRange.Value;
             bool isInAtkRange = GetDistSqrToTarget() <= heroStats.DefaultAtkRange.Value * heroStats.DefaultAtkRange.Value;
 
-            if (!isInSkillRange && !isInAtkRange)
-                MoveToTarget();
-            else
+            bool canUseSpecialSkill = isInSkillRange && hero.SkillSystem.SpecialSkill.IsReady();
+            bool canUseDefaultSkill = isInAtkRange && hero.SkillSystem.DefaultSkill.IsReady();
+
+            if (canUseSpecialSkill || canUseDefaultSkill)
             {
                 hero.ChangeState(ECreatureState.Atk);
+                return;
+            }
+            else
+            {
+                MoveToTarget();
                 return;
             }
         }

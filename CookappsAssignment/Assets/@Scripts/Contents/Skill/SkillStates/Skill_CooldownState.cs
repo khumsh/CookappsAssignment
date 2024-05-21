@@ -31,8 +31,8 @@ public class Skill_CooldownState : IState
             cooldownTime = 1 / ownerData.AtkCountPerSecond;
         }
 
-        Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State\n" +
-            $"CooldownTime : {cooldownTime}");
+        //Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State\n" +
+        //    $"CooldownTime : {cooldownTime}");
     }
 
     public void Update()

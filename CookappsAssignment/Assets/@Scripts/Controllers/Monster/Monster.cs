@@ -34,10 +34,13 @@ public class Monster : Creature
 
     protected void StatsInit()
     {
+        // 스테이지당 10%씩 증가
+        float statMult = Mathf.Pow(1.1f, Managers.Game.StageLevel - 1);
+
         MonsterStats = new MonsterStats(this);
-        MonsterStats.MaxHp = new Stat(MonsterData.MaxHp);
+        MonsterStats.MaxHp = new Stat(MonsterData.MaxHp * statMult);
         MonsterStats.Hp = MonsterStats.MaxHp.Value;
-        MonsterStats.Atk = new Stat(MonsterData.Atk);
+        MonsterStats.Atk = new Stat(MonsterData.Atk * statMult);
         MonsterStats.AtkRange = new Stat(MonsterData.AtkRange);
         MonsterStats.AtkCountPerSecond = new Stat(MonsterData.AtkCountPerSecond);
         MonsterStats.MoveSpeed = new Stat(MonsterData.MoveSpeed);

@@ -154,7 +154,7 @@ public class UIManager
 
         if (_popups.TryGetValue(name, out UI_Popup popup) == false)
         {
-            GameObject go = Managers.Resource.Instantiate(name);
+            GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
             popup = Util.GetOrAddComponent<T>(go);
             _popups[name] = popup;
         }

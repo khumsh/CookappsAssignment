@@ -127,34 +127,29 @@ public class ObjectManager
         Managers.Resource.Destroy(projectile.gameObject);
     }
 
-    //private T FindClosestTarget<T>(Creature source, List<T> targets) where T : Creature
-    //{
-    //    float minDistance = float.MaxValue;
-    //    T closestTarget = null;
+    private T FindClosestTarget<T>(Creature source, List<T> targets) where T : Creature
+    {
+        float minDistance = float.MaxValue;
+        T closestTarget = null;
 
-    //    foreach (T target in targets)
-    //    {
-    //        float distance = (source.transform.position - target.transform.position).sqrMagnitude;
-            
-    //        if (target.IsValid() == false)
-    //        {
-    //            continue;
-    //        }
-               
-    //        // float AttackRange = Mathf.Max(source.Skills.CurrentSkill.SkillData.SkillRange, SCAN_RANGE);
-    //        //
-    //        // if(distance > AttackRange * AttackRange)
-    //        //     continue;
-            
-    //        if (distance < minDistance)
-    //        {
-    //            minDistance = distance;
-    //            closestTarget = target;
-    //        }
-    //    }
+        foreach (T target in targets)
+        {
+            float distance = (source.transform.position - target.transform.position).sqrMagnitude;
 
-    //    return closestTarget;
-    //}
+            if (!target.IsValid())
+            {
+                continue;
+            }
 
-    
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestTarget = target;
+            }
+        }
+
+        return closestTarget;
+    }
+
+
 }

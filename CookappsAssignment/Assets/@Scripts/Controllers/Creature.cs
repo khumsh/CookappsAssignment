@@ -2,10 +2,8 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 using static Define;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Creature : BaseObject
 {
@@ -121,6 +119,9 @@ public class Creature : BaseObject
                     float closestDistSqr = float.MaxValue;
                     foreach (Creature target in targets)
                     {
+                        if (!target.IsValid())
+                            continue;
+
                         float distSqr = (target.Position - Position).sqrMagnitude;
                         if (distSqr < closestDistSqr)
                         {
@@ -135,6 +136,9 @@ public class Creature : BaseObject
                     float minHp = float.MaxValue;
                     foreach (Creature target in targets)
                     {
+                        if (!target.IsValid())
+                            continue;
+
                         float hp = (targetType == ETargetType.Hero) ?
                             (target as Hero).HeroStats.Hp : (target as Monster).MonsterStats.Hp;
                         
@@ -151,6 +155,9 @@ public class Creature : BaseObject
                     float minHpRatio = float.MaxValue;
                     foreach (Creature target in targets)
                     {
+                        if (!target.IsValid())
+                            continue;
+
                         float hpRatio = (targetType == ETargetType.Hero) ?
                             (target as Hero).HeroStats.Hp / (target as Hero).HeroStats.MaxHp.Value 
                             : (target as Monster).MonsterStats.Hp / (target as Monster).MonsterStats.MaxHp.Value;

@@ -28,10 +28,6 @@ public class Hero_DeadState : IState
         if (hero.StateMachine.stateTimer > HERO_REVIVAL_TIME && !Managers.Game.IsGameOver)
         {
             hero.ChangeState(ECreatureState.Idle);
-
-            hero.HeroStats.Hp = hero.HeroStats.MaxHp.Value;
-            hero.transform.DOLocalJump(Vector3.up * 0.5f, 1, 1, 0.5f);
-            Managers.Resource.Instantiate("Effect/Revival", hero.transform);
         }
     }
 
@@ -39,5 +35,10 @@ public class Hero_DeadState : IState
     {
         hero.col2D.isTrigger = false;
         hero.Target = null;
+
+        hero.CreatureState = ECreatureState.Idle;
+        hero.HeroStats.Hp = hero.HeroStats.MaxHp.Value;
+        hero.transform.DOLocalJump(Vector3.up * 0.5f, 1, 1, 0.5f);
+        Managers.Resource.Instantiate("Effect/Revival", hero.transform);
     }
 }

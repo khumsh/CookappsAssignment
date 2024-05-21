@@ -17,7 +17,7 @@ public class Monster_StunState : IState
 
     public void Enter()
     {
-        Debug.Log($"{monster.name} : Enter [{StateName}] State");
+        //Debug.Log($"{monster.name} : Enter [{StateName}] State");
 
         monster.CreatureState = ECreatureState.Stun;
         monster.PlayAnimation("Idle");

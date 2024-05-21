@@ -19,7 +19,7 @@ public class Skill_UseState : IState
 
     public void Enter()
     {
-        Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State");
+        //Debug.Log($"{skill.SkillData.SkillName} : Enter [{StateName}] State");
 
         // 타겟 서치용 값
         Vector3 SearchPoint = Owner.transform.position;
@@ -43,7 +43,8 @@ public class Skill_UseState : IState
             // 타겟에게 이펙트 적용
             foreach (ESkillEffectType effectType in skillData.SkillEffectTypes)
             {
-                ApplyEffect(target, effectType);
+                //ApplyEffect(target, effectType);
+                ApplyEffect(Owner.Target, effectType);
             }
         }
         // 다중(범위) 스킬
