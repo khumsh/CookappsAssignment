@@ -12,16 +12,19 @@ public class Define
     public static int ID_HERO_ARCHER = 2003;
     public static int ID_HERO_PRIEST = 2004;
     public static int ID_MONSTER_NORMAL = 5001;
+    public static int ID_MONSTER_BOSS = 5002;
 
     public static float DETECT_RANGE_MONSTER = 6f; // 과제 파일에 없어서 임의로 지정
 
     public static float STAT_BONUS_MULT = 0.5f;
 
+    public static float HERO_REVIVAL_TIME = 5;
+
     public static float MONSTER_KILL_EXP = 10;
     public static float MAX_EXP_DEFAULT = 30;
     public static float MAX_EXP_BONUS_MULT = 0.3f; // 레벨당 최대 경험치 30% 증가
 
-
+    public static int MONSTER_DROP_GOLD = 5;
     #endregion
 
 
@@ -127,6 +130,12 @@ public class Define
         DealDamage,
         Heal,
         Stun
+    }
+
+    public enum EMonsterType
+    {
+        Normal,
+        Boss
     }
 
     #endregion

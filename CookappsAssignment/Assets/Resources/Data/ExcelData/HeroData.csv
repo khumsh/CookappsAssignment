@@ -1,5 +1,5 @@
-﻿DataId,PrefabPath,MaxHp,Atk,DefaultAtkRange,DefaultAtkCooltime,SkillRange,SkillCooltime,MoveSpeed,DefaultSkillId,SpecialSkillId
-2001,Prefab/Knight,400,5,1,1.5,1,3,3,100001,100002
-2002,Prefab/Thief,200,10,1,1,2,3,3,100003,100004
-2003,Prefab/Archer,100,15,4,1,4,4,3,100005,100006
-2004,Prefab/Priest,100,10,4,1,4,6,3,100007,100008
+﻿DataId,PrefabPath,IconPath,MaxHp,Atk,DefaultAtkRange,DefaultAtkCooltime,SkillRange,SkillCooltime,MoveSpeed,DefaultSkillId,SpecialSkillId
+2001,Prefab/Knight,Icon/Icon_Knight,400,5,1,1.5,1,3,3,100001,100002
+2002,Prefab/Thief,Icon/Icon_Thief,200,10,1,1,2,3,3,100003,100004
+2003,Prefab/Archer,Icon/Icon_Archer,100,15,4,1,4,4,3,100005,100006
+2004,Prefab/Priest,Icon/Icon_Priest,100,10,4,1,4,6,3,100007,100008

@@ -1,7 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public struct HeroUIInfo
 {
@@ -11,16 +14,17 @@ public struct HeroUIInfo
     public int hp;
     public int maxExp;
     public int exp;
+    public int atk;
 }
 
-public struct HeroSlotUIEvent
+public struct UIEvent_HeroSlot
 {
     public HeroUIInfo EventHeroUIInfo;
-    public HeroSlotUIEvent(HeroUIInfo heroUIInfo)
+    public UIEvent_HeroSlot(HeroUIInfo heroUIInfo)
     {
         EventHeroUIInfo = heroUIInfo;
     }
-    static HeroSlotUIEvent e;
+    static UIEvent_HeroSlot e;
     public static void Trigger(HeroUIInfo heroUIInfo)
     {
         e.EventHeroUIInfo = heroUIInfo;
@@ -29,15 +33,37 @@ public struct HeroSlotUIEvent
     }
 }
 
-public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
+public enum UIEvent_GameScene { GoldChanged, SpawnBoss}
+
+public class UI_AssignmentScene : UI_Scene, EventListener<UIEvent_HeroSlot>, EventListener<UIEvent_GameScene>
 {
+    enum Objects
+    {
+        BossHpBar,
+    }
+
+
     enum Texts
     {
+        GoldValueText,
+
         // LevelText
         Hero1_LevelText,
         Hero2_LevelText, 
         Hero3_LevelText,
         Hero4_LevelText,
+
+        // AtkStatText
+        Hero1_AtkStatText,
+        Hero2_AtkStatText,
+        Hero3_AtkStatText,
+        Hero4_AtkStatText,
+
+        // HpStatText
+        Hero1_HpStatText,
+        Hero2_HpStatText,
+        Hero3_HpStatText,
+        Hero4_HpStatText,
 
         // HpSliderText
         Hero1_HpSliderText,
@@ -50,10 +76,24 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
         Hero2_ExpSliderText,
         Hero3_ExpSliderText,
         Hero4_ExpSliderText,
+
+        // RevivalTimeText
+        Hero1_RevivalTimeText,
+        Hero2_RevivalTimeText,
+        Hero3_RevivalTimeText,
+        Hero4_RevivalTimeText,
     }
 
     enum Images
     {
+        GoldImage,
+
+        // RevivalTimeCounter
+        Hero1_RevivalTimeCounter,
+        Hero2_RevivalTimeCounter,
+        Hero3_RevivalTimeCounter,
+        Hero4_RevivalTimeCounter,
+
         // Icon
         Hero1_Icon,
         Hero2_Icon,
@@ -76,7 +116,10 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
         Hero4_ExpSlider,
     }
 
-    public Hero[] heroes = new Hero[4];
+    [HideInInspector] public Hero[] _heroes;
+
+    private AssignmentScene _scene;
+    
 
     protected override bool Init()
     {
@@ -84,34 +127,79 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
             return false;
 
         // Bind
+        BindObject(typeof(Objects));
         BindText(typeof(Texts));
         BindImage(typeof(Images));
         BindSlider(typeof(Sliders));
 
-        
-
         return true;
+    }
+
+    public void SetInfo(AssignmentScene scene, Hero[] heroes)
+    {
+        _scene = scene;
+        _heroes = heroes;
+
+        for (int i = 0; i < _heroes.Length; i++)
+        {
+            int idx = i;
+
+            _heroes[idx].TriggerHeroUIInfo();
+            _heroes[idx].OnDeadAction += () => StartRevivalCo(idx);
+        }
+
+        GetImage(Images.Hero1_Icon).gameObject.BindEvent(() => { _scene.virtualCamera.Follow = _heroes[0].transform; });
+        GetImage(Images.Hero2_Icon).gameObject.BindEvent(() => { _scene.virtualCamera.Follow = _heroes[1].transform; });
+        GetImage(Images.Hero3_Icon).gameObject.BindEvent(() => { _scene.virtualCamera.Follow = _heroes[2].transform; });
+        GetImage(Images.Hero4_Icon).gameObject.BindEvent(() => { _scene.virtualCamera.Follow = _heroes[3].transform; });
+
+        GetImage(Images.Hero1_RevivalTimeCounter).gameObject.SetActive(false);
+        GetImage(Images.Hero2_RevivalTimeCounter).gameObject.SetActive(false);
+        GetImage(Images.Hero3_RevivalTimeCounter).gameObject.SetActive(false);
+        GetImage(Images.Hero4_RevivalTimeCounter).gameObject.SetActive(false);
+
+        GetText(Texts.Hero1_RevivalTimeText).text = "";
+        GetText(Texts.Hero2_RevivalTimeText).text = "";
+        GetText(Texts.Hero3_RevivalTimeText).text = "";
+        GetText(Texts.Hero4_RevivalTimeText).text = "";
+
+        GetObject(Objects.BossHpBar).gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
-        EventManager.AddListener(this);
+        EventManager.AddListener<UIEvent_HeroSlot>(this);
+        EventManager.AddListener<UIEvent_GameScene>(this);
     }
 
     private void OnDisable()
     {
-        EventManager.RemoveListener(this);
+        EventManager.RemoveListener<UIEvent_HeroSlot>(this);
+        EventManager.RemoveListener<UIEvent_GameScene>(this);
     }
 
-    public void OnEvent(HeroSlotUIEvent eventType)
+    public void OnEvent(UIEvent_HeroSlot eventType)
     {
-        for (int i = 0; i < heroes.Length; i++)
+        for (int i = 0; i < _heroes.Length; i++)
         {
-            if (heroes[i] == eventType.EventHeroUIInfo.hero)
+            if (_heroes[i] == eventType.EventHeroUIInfo.hero)
             {
                 OnHeroInfoChanged(i, eventType.EventHeroUIInfo);
                 break;
             }
+        }
+    }
+
+    public void OnEvent(UIEvent_GameScene eventType)
+    {
+        switch(eventType)
+        {
+            case UIEvent_GameScene.GoldChanged:
+                OnGoldChanged();
+                break;
+            case UIEvent_GameScene.SpawnBoss:
+                OnBossSpawned();
+                break;
         }
     }
 
@@ -134,12 +222,32 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
         }
     }
 
+    private void OnGoldChanged()
+    {
+
+        GetText(Texts.GoldValueText).text = Managers.Game.Gold.ToString();
+        GetText(Texts.GoldValueText).transform.DOKill(complete: true);
+        GetText(Texts.GoldValueText).transform.DOScale(1.2f, 0.1f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutFlash);
+        
+        GetImage(Images.GoldImage).rectTransform.DOKill(complete: true);
+        GetImage(Images.GoldImage).rectTransform.DOScale(1.2f, 0.1f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutFlash);
+    }
+
     private void OnHero1InfoChanged(HeroUIInfo info)
     {
         if (info.hero == null) return;
 
+        // HeroIcon
+        GetImage(Images.Hero1_Icon).sprite = Managers.Resource.Load<Sprite>(info.hero.HeroData.IconPath);
+
         // LevelText
         GetText(Texts.Hero1_LevelText).text = $"Lv. {info.level}";
+
+        // AtkStatText
+        GetText(Texts.Hero1_AtkStatText).text = info.atk.ToString();
+
+        // HpStatText
+        GetText(Texts.Hero1_HpStatText).text = info.maxHp.ToString();
 
         // HpSliderText
         GetText(Texts.Hero1_HpSliderText).text = $"{info.hp} / {info.maxHp}";
@@ -158,8 +266,17 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
     {
         if (info.hero == null) return;
 
+        // HeroIcon
+        GetImage(Images.Hero2_Icon).sprite = Managers.Resource.Load<Sprite>(info.hero.HeroData.IconPath);
+
         // LevelText
         GetText(Texts.Hero2_LevelText).text = $"Lv. {info.level}";
+
+        // AtkStatText
+        GetText(Texts.Hero2_AtkStatText).text = info.atk.ToString();
+
+        // HpStatText
+        GetText(Texts.Hero2_HpStatText).text = info.maxHp.ToString();
 
         // HpSliderText
         GetText(Texts.Hero2_HpSliderText).text = $"{info.hp} / {info.maxHp}";
@@ -178,8 +295,17 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
     {
         if (info.hero == null) return;
 
+        // HeroIcon
+        GetImage(Images.Hero3_Icon).sprite = Managers.Resource.Load<Sprite>(info.hero.HeroData.IconPath);
+
         // LevelText
         GetText(Texts.Hero3_LevelText).text = $"Lv. {info.level}";
+
+        // AtkStatText
+        GetText(Texts.Hero3_AtkStatText).text = info.atk.ToString();
+
+        // HpStatText
+        GetText(Texts.Hero3_HpStatText).text = info.maxHp.ToString();
 
         // HpSliderText
         GetText(Texts.Hero3_HpSliderText).text = $"{info.hp} / {info.maxHp}";
@@ -198,8 +324,17 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
     {
         if (info.hero == null) return;
 
+        // HeroIcon
+        GetImage(Images.Hero4_Icon).sprite = Managers.Resource.Load<Sprite>(info.hero.HeroData.IconPath);
+
         // LevelText
         GetText(Texts.Hero4_LevelText).text = $"Lv. {info.level}";
+
+        // AtkStatText
+        GetText(Texts.Hero4_AtkStatText).text = info.atk.ToString();
+
+        // HpStatText
+        GetText(Texts.Hero4_HpStatText).text = info.maxHp.ToString();
 
         // HpSliderText
         GetText(Texts.Hero4_HpSliderText).text = $"{info.hp} / {info.maxHp}";
@@ -212,5 +347,68 @@ public class UI_AssignmentScene : UI_Scene, EventListener<HeroSlotUIEvent>
 
         // ExpSlider
         GetSlider(Sliders.Hero4_ExpSlider).value = (float)info.exp / info.maxExp;
+    }
+
+    private void StartRevivalCo(int idx)
+    {
+        StartCoroutine(RevivalCo(idx));
+    }
+
+    private IEnumerator RevivalCo(int idx)
+    {
+        // fillAmount : 1 -> 0
+        // TimeText : 5 -> 0
+
+        Images imgEnum = Util.ParseEnum<Images>($"Hero{idx + 1}_RevivalTimeCounter");
+        Texts textEnum = Util.ParseEnum<Texts>($"Hero{idx + 1}_RevivalTimeText");
+
+        Image revivalImg = GetImage(imgEnum);
+        TMP_Text revivalText = GetText(textEnum);
+
+        float cooldown = Define.HERO_REVIVAL_TIME;
+        float currentTime = cooldown;
+
+        revivalImg.gameObject.SetActive(true);
+        revivalImg.fillAmount = 1;
+
+        while (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime;
+            revivalImg.fillAmount = currentTime / cooldown;
+            revivalText.text = currentTime.ToString("F2");
+
+            yield return null;
+        }
+
+        revivalImg.fillAmount = 0;
+        revivalText.text = "";
+    }
+
+    private void OnBossSpawned()
+    {
+        GetObject(Objects.BossHpBar).gameObject.SetActive(true);
+        UI_HPBar bossHpBar = GetObject(Objects.BossHpBar).GetComponent<UI_HPBar>();
+
+        if (bossHpBar == null)
+        {
+            Debug.LogWarning("BossHpBar 찾을 수 없음!");
+            return;
+        }
+
+
+        foreach (var monster in Managers.Object.Monsters)
+        {
+            if (monster.MonsterType == Define.EMonsterType.Boss)
+            {
+                bossHpBar.SetInfo(monster);
+
+                monster.OnHpChangedAction -= () => bossHpBar.SetHpRatio(monster.MonsterStats.Hp / monster.MonsterStats.MaxHp.Value);
+                monster.OnHpChangedAction += () => bossHpBar.SetHpRatio(monster.MonsterStats.Hp / monster.MonsterStats.MaxHp.Value);
+
+                monster.OnDeadAction -= () => bossHpBar.gameObject.SetActive(false);
+                monster.OnDeadAction += () => bossHpBar.gameObject.SetActive(false);
+            }
+                
+        }
     }
 }

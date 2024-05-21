@@ -12,6 +12,7 @@ public class AssignmentScene : BaseScene
     public CinemachineVirtualCamera virtualCamera;
 
 
+
     protected override bool Init()
     {
         if (!base.Init())
@@ -19,6 +20,13 @@ public class AssignmentScene : BaseScene
 
         Managers.Data.Init();
 
+        
+
+        return true;
+    }
+
+    private void Start()
+    {
         // Spawn Hero
         {
             Hero knight = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_KNIGHT);
@@ -26,20 +34,15 @@ public class AssignmentScene : BaseScene
             Hero archer = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_ARCHER);
             Hero priest = Managers.Object.Spawn<Hero>(Util.RandomPointInAnnulus(Vector2.zero, 1, 2), ID_HERO_PRIEST);
 
-            ui_scene.heroes = new Hero[4]{ knight, thief, archer, priest };
-            foreach(Hero hero in ui_scene.heroes)
-                hero.TriggerHeroUIInfo();
+            ui_scene.SetInfo(this, new Hero[4] { knight, thief, archer, priest });
 
             virtualCamera.Follow = knight.transform;
             //virtualCamera.Follow = thief.transform;
         }
-        
 
+        Managers.Game.Gold = 0;
         Managers.Game.StageLevel = 1;
-
         StartCoroutine(StartStageCo(Managers.Game.StageLevel));
-
-        return true;
     }
 
     public override void Clear()
@@ -69,8 +72,11 @@ public class AssignmentScene : BaseScene
 
             if (Managers.Game.EnemyKillCount >= 5)
             {
-                Managers.UI.ShowToast("Stage Clear!");
-                //break;
+                Managers.UI.ShowToast("Boss Spawned!");
+                Vector2 spawnPos = Util.RandomPointInAnnulus(Managers.Object.Heroes.FirstOrDefault().Position, 5, 10);
+                Managers.Object.Spawn<Monster>(spawnPos, ID_MONSTER_BOSS);
+                EventManager.TriggerEvent(UIEvent_GameScene.SpawnBoss);
+                break;
             }
         }
     }

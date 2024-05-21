@@ -25,7 +25,7 @@ public class Hero_DeadState : IState
 
     public void Update()
     {
-        if (hero.StateMachine.stateTimer > 5 && !Managers.Game.IsGameOver)
+        if (hero.StateMachine.stateTimer > HERO_REVIVAL_TIME && !Managers.Game.IsGameOver)
         {
             hero.ChangeState(ECreatureState.Idle);
 

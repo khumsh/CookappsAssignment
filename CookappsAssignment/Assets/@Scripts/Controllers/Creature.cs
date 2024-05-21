@@ -25,6 +25,9 @@ public class Creature : BaseObject
     public Transform view;
     public bool isLeftFacing;
 
+    public event Action OnHpChangedAction;
+    public event Action OnDeadAction;
+
     public Creature Target { get; set; }
     public bool IsPlayer => this is Hero;
 
@@ -73,6 +76,11 @@ public class Creature : BaseObject
         StateMachine.SetState(nextState.ToString());
     }
 
+    public virtual void OnHpChanged()
+    {
+        OnHpChangedAction?.Invoke();
+    }
+
     public virtual void OnDamaged(float dmg, Creature attacker, Skill skill)
     {
         if (skill != null)
@@ -97,7 +105,7 @@ public class Creature : BaseObject
 
     protected virtual void OnDead()
     {
-
+        OnDeadAction?.Invoke();
     }
 
     public Creature GetTargetInRange(Vector3 point, float range, ETargetType targetType, ETargetSearchResult targetSearchResult = ETargetSearchResult.Closest, bool canSelf = false)

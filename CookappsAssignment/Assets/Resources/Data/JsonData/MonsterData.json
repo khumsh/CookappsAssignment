@@ -3,11 +3,23 @@
     {
       "DataId": 5001,
       "PrefabPath": "Prefab/Monster",
+      "MonsterType": 0,
       "MaxHp": 100.0,
       "Atk": 10.0,
       "AtkCountPerSecond": 1.0,
       "AtkRange": 1.0,
       "MoveSpeed": 5.0,
+      "DefaultSkillId": 200001
+    },
+    {
+      "DataId": 5002,
+      "PrefabPath": "Prefab/BossMonster",
+      "MonsterType": 1,
+      "MaxHp": 800.0,
+      "Atk": 50.0,
+      "AtkCountPerSecond": 1.0,
+      "AtkRange": 2.0,
+      "MoveSpeed": 3.0,
       "DefaultSkillId": 200001
     }
   ]

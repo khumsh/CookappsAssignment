@@ -12,6 +12,7 @@ namespace Data
     {
         public int DataId;
         public string PrefabPath;
+        public string IconPath;
         public float MaxHp;
         public float Atk;
         public float DefaultAtkRange;
@@ -43,6 +44,7 @@ namespace Data
     {
         public int DataId;
         public string PrefabPath;
+        public EMonsterType MonsterType;
         public float MaxHp;
         public float Atk;
         public float AtkCountPerSecond; // 초당 공격 횟수

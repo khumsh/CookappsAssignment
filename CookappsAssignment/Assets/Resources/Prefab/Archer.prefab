@@ -896,7 +896,7 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_SortAtRoot: 1
+  m_SortAtRoot: 0
 --- !u!1001 &6688859927047013151
 PrefabInstance:
   m_ObjectHideFlags: 0

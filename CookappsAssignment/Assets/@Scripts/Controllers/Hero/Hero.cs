@@ -69,6 +69,8 @@ public class Hero : Creature
         HeroStats.Hp = HeroStats.MaxHp.Value;
         HeroStats.Exp = 0;
         HeroStats.Level = 1;
+
+        HeroStats.MaxHp.OnValueChanged += OnHpChanged;
     }
 
     protected void SkillInit()
@@ -114,7 +116,7 @@ public class Hero : Creature
         Managers.Game.CheckGameOver();
     }
 
-    public void OnHpChanged()
+    public override void OnHpChanged()
     {
         hpBar?.SetHpRatio(HeroStats.Hp / HeroStats.MaxHp.Value);
 
@@ -164,7 +166,8 @@ public class Hero : Creature
         uiInfo.hp = (int)HeroStats.Hp;
         uiInfo.maxExp = (int)HeroStats.MaxExp.Value;
         uiInfo.exp = (int)HeroStats.Exp;
+        uiInfo.atk = (int)HeroStats.Atk.Value;
 
-        HeroSlotUIEvent.Trigger(uiInfo);
+        UIEvent_HeroSlot.Trigger(uiInfo);
     }
 }

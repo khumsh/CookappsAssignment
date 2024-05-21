@@ -88,7 +88,11 @@ public class UI_HPBar : UI_Base
                     Monster monster = Owner as Monster;
                     if (monster.IsValid())
                     {
-                        GetText((int)Texts.HpValueText).text = monster.MonsterStats.Hp.ToString();
+                        if (monster.MonsterType == Define.EMonsterType.Normal)
+                            GetText((int)Texts.HpValueText).text = monster.MonsterStats.Hp.ToString();
+                        else if (monster.MonsterType == Define.EMonsterType.Boss)
+                            GetText((int)Texts.HpValueText).text = $"{monster.MonsterStats.Hp} / {monster.MonsterStats.MaxHp.Value}";
+
                     }
                 }
                 

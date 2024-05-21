@@ -8,7 +8,8 @@ public class Monster : Creature
 {
     public MonsterData MonsterData { get; private set; }
     public MonsterStats MonsterStats { get; private set; }
-    
+
+    public EMonsterType MonsterType { get; private set; }
 
     protected override bool Init()
     {
@@ -21,6 +22,8 @@ public class Monster : Creature
     {
         MonsterData = Managers.Data.MonsterDic[templateId];
 
+        MonsterType = MonsterData.MonsterType;
+
         SkillSystem.AddSkill(MonsterData.DefaultSkillId, ESkillType.Default);
 
         StatsInit();
@@ -31,13 +34,15 @@ public class Monster : Creature
 
     protected void StatsInit()
     {
-        MonsterStats = new MonsterStats();
+        MonsterStats = new MonsterStats(this);
         MonsterStats.MaxHp = new Stat(MonsterData.MaxHp);
         MonsterStats.Hp = MonsterStats.MaxHp.Value;
         MonsterStats.Atk = new Stat(MonsterData.Atk);
         MonsterStats.AtkRange = new Stat(MonsterData.AtkRange);
         MonsterStats.AtkCountPerSecond = new Stat(MonsterData.AtkCountPerSecond);
         MonsterStats.MoveSpeed = new Stat(MonsterData.MoveSpeed);
+
+        MonsterStats.MaxHp.OnValueChanged += OnHpChanged;
     }
 
     protected override void StateMachineInit()
@@ -84,7 +89,12 @@ public class Monster : Creature
         ChangeState(ECreatureState.Dead);
 
         Managers.Game.EnemyKillCount++;
+        Managers.Game.Gold += 5;
 
+        if (MonsterType == EMonsterType.Boss)
+        {
+            Managers.Game.StageClear();
+        }
 
     }
 
